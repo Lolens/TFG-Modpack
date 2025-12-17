@@ -3,6 +3,7 @@ run-name: "📦 Project Build #${{ github.run_number }}"
 on:
   push:
     branches:
+      - dev
       - main
 
 concurrency:
