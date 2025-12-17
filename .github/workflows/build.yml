@@ -373,33 +373,6 @@ jobs:
           path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
           if-no-files-found: error
 
-      - name: 🖥️ Build MultiMC artifact
-        run: |
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-          mkdir -p build/multimc
-
-          mv -vf .pakku/multimc-overrides ./build/multimc/
-          
-          cp -rf ./build/.cache/curseforge/overrides ./build/multimc/.minecraft
-
-          cp -vf ./build/.cache/curseforge/manifest.json ./build/multimc/flame/manifest.json
-          cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/multimc/.minecraft/icon.png
-          
-          if [ -d "./mods" ]; then
-            cp -rf ./mods ./build/multimc/.minecraft/
-          fi
-
-          cd ./build/multimc/
-          zip -r ${{ needs.info.outputs.project_full_name }}-multimc.zip icon.png mmc-pack.json instance.cfg .minecraft/ flame/
-
-      - name: 🚀 Upload MultiMC artifact
-        uses: actions/upload-artifact@v6.0.0
-        with:
-          name: ${{ needs.info.outputs.project_full_name }}-multimc
-          path: ./build/multimc/${{ needs.info.outputs.project_full_name }}-multimc.zip
-          if-no-files-found: error
-
       - name: 🖥️ Build Server artifact
         run: |
           cd ./build/serverpack/
@@ -436,9 +409,6 @@ jobs:
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
             echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
           fi
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-multimc.zip ]; then
-            echo '::error::No value found for artifact `multimc.zip`.' && exit 1
-          fi
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-minecraft.zip ]; then
             echo '::error::No value found for artifact `minecraft.zip`.' && exit 1
           fi
@@ -466,7 +436,6 @@ jobs:
             ${{ steps.format_diff.outputs.text }}
           files: |
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
-            ${{ needs.info.outputs.project_full_name }}-multimc.zip
             ${{ needs.info.outputs.project_full_name }}-minecraft.zip
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
