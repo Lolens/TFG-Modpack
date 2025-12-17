@@ -296,8 +296,8 @@ jobs:
 
             ${{ needs.info.outputs.changelog }}
 
-  build-minecraft:
-    name: 🎮 Build Minecraft Structure
+  build-all:
+    name: 📦 Build All Artifacts
     needs: [info]
     runs-on: ubuntu-latest
     steps:
@@ -338,7 +338,7 @@ jobs:
           java -jar pakku.jar fetch
           java -jar pakku.jar export
 
-      - name: 📁 Preparing Minecraft structure
+      - name: 🎮 Build Minecraft structure artifact
         run: |
           mkdir -p build/minecraft-structure/.minecraft
           
@@ -362,12 +362,10 @@ jobs:
           
           mkdir -p ./build/minecraft-structure/.minecraft/saves
           mkdir -p ./build/minecraft-structure/.minecraft/logs
-
-      - name: 📦 Create Minecraft structure archive
-        run: |
+          
           cd ./build/minecraft-structure
           zip -r ${{ needs.info.outputs.project_full_name }}-minecraft.zip .minecraft/
-      
+
       - name: 🚀 Upload Minecraft structure artifact
         uses: actions/upload-artifact@v6.0.0
         with:
@@ -375,55 +373,11 @@ jobs:
           path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
           if-no-files-found: error
 
-  build-project:
-    name: 📦 Build Project
-    needs: [info]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.1
-
-      - name: 🔄 Replace strings
-        shell: bash
-        run: |
-          VERSION=${{ needs.info.outputs.project_version }}
-          LOADER_VERSION=${{ needs.info.outputs.loader_version }}
-          LOADER_TYPE=${{ needs.info.outputs.loader_type }}
-          MINECRAFT_VERSION=${{ needs.info.outputs.mc_version }}
-
-          sed -i -e "s/DEV/${VERSION}/g" pakku.json
-          sed -i -e "s/DEV/${VERSION}/g" config/mod-director/modpack.json
-          sed -i -e "s/DEV/${VERSION}/g" config/fancymenu/customization/gui_main_menu.txt
-
-          sed -i -e "s/DEV/${VERSION}/g" .pakku/multimc-overrides/instance.cfg
-          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
-          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/multimc-overrides/mmc-pack.json
-          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
-
-          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
-          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/server-overrides/forge-auto-install.txt
-          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
-
-      - name: 📝 Cache pakku
-        uses: actions/cache@v5.0.1
-        id: cache
-        with:
-          path: build/.cache
-          key: pakku-cache-${{ hashFiles('pakku-lock.json') }}
-          restore-keys: pakku-cache-
-
-      - name: 📦 Export modpack
-        run: |
-          java -jar pakku.jar fetch
-          java -jar pakku.jar export
-
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-
-      - name: 📁 Preparing the artifact multimc
+      - name: 🖥️ Build MultiMC artifact
         run: |
           mkdir -p .pakku/multimc-overrides/flame
           mkdir -p .pakku/multimc-overrides/mods
+          mkdir -p build/multimc
 
           mv -vf .pakku/multimc-overrides ./build/multimc/
           
@@ -431,24 +385,27 @@ jobs:
 
           cp -vf ./build/.cache/curseforge/manifest.json ./build/multimc/flame/manifest.json
           cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/multimc/.minecraft/icon.png
-          cp -rf ./mods ./build/multimc/.minecraft/
+          
+          if [ -d "./mods" ]; then
+            cp -rf ./mods ./build/multimc/.minecraft/
+          fi
 
           cd ./build/multimc/
           zip -r ${{ needs.info.outputs.project_full_name }}-multimc.zip icon.png mmc-pack.json instance.cfg .minecraft/ flame/
-      
-      - name: 🚀 Upload artifact multimc
+
+      - name: 🚀 Upload MultiMC artifact
         uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ needs.info.outputs.project_full_name }}-multimc
           path: ./build/multimc/${{ needs.info.outputs.project_full_name }}-multimc.zip
           if-no-files-found: error
 
-      - name: 📁 Preparing the artifact server
+      - name: 🖥️ Build Server artifact
         run: |
           cd ./build/serverpack/
           mv *.zip $(basename -s .zip *.zip)-serverpack.zip
 
-      - name: 🚀 Upload artifact server
+      - name: 🚀 Upload Server artifact
         uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ needs.info.outputs.project_full_name }}-serverpack
@@ -457,7 +414,7 @@ jobs:
 
   release-github:
     name: 🚀 Release to GitHub
-    needs: [info, build-project, build-minecraft]
+    needs: [info, build-all]
     runs-on: ubuntu-latest
     if: ${{ needs.info.outputs.make_release == 'true' }}
     outputs:
