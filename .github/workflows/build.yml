@@ -18,7 +18,6 @@ jobs:
   info:
     name: 🖥️ Project Info
     runs-on: ubuntu-latest
-    if: ${{  github.repository_owner == 'TerraFirmaGreg-Team' }}
     outputs:
       project_version: ${{ steps.check.outputs.project_version }}
       project_name: ${{ steps.check.outputs.project_name }}
@@ -31,7 +30,6 @@ jobs:
       diff: ${{ steps.read_diff.outputs.diff }}
       exists: ${{ steps.check.outputs.exists }}
       make_release: ${{ steps.check.outputs.make_release }}
-      make_pr: ${{ steps.check.outputs.make_pr }}
     
     steps:
       - name: 📦 Checkout
@@ -190,7 +188,6 @@ jobs:
           echo "release_type=${{ steps.pakku_info.outputs.release_type }}" >> $GITHUB_OUTPUT
           echo "exists=${{ steps.check_tag.outputs.exists }}" >> $GITHUB_OUTPUT
           echo "make_release=${{ steps.check_tag.outputs.exists == 'false' && env.DEV_ENVIRONMENT == 'false' }}" >> $GITHUB_OUTPUT
-          echo "make_pr=${{ steps.check_tag.outputs.exists  == 'false'  && env.DEV_ENVIRONMENT == 'true' }}" >> $GITHUB_OUTPUT
 
       - name: 📄 Format diff
         id: format_diff
@@ -215,7 +212,6 @@ jobs:
 
             📃 **Dev Environment**: `${{ env.DEV_ENVIRONMENT }}`
             📃 **Tag Exists**: `${{ steps.check.outputs.exists }}`
-            📃 **Make Pull Request**: `${{ steps.check.outputs.make_pr }}`
             📃 **Make Release**: `${{ steps.check.outputs.make_release }}`
             
 
