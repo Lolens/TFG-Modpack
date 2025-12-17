@@ -3,6 +3,7 @@ run-name: "📦 Project Build #${{ github.run_number }}"
 on:
   push:
     branches:
+      - dev
       - main
 
 concurrency:
@@ -16,7 +17,6 @@ jobs:
   info:
     name: 🖥️ Project Info
     runs-on: ubuntu-latest
-    # if: ${{  github.repository_owner == 'TerraFirmaGreg-Team' }}
     outputs:
       project_version: ${{ steps.check.outputs.project_version }}
       project_name: ${{ steps.check.outputs.project_name }}
@@ -296,8 +296,8 @@ jobs:
 
             ${{ needs.info.outputs.changelog }}
 
-  build-project:
-    name: 📦 Build Project
+  build-all:
+    name: 📦 Build All Artifacts
     needs: [info]
     runs-on: ubuntu-latest
     steps:
@@ -307,8 +307,6 @@ jobs:
       - name: 🔄 Replace strings
         shell: bash
         run: |
-          set +e
-
           VERSION=${{ needs.info.outputs.project_version }}
           LOADER_VERSION=${{ needs.info.outputs.loader_version }}
           LOADER_TYPE=${{ needs.info.outputs.loader_type }}
@@ -340,38 +338,47 @@ jobs:
           java -jar pakku.jar fetch
           java -jar pakku.jar export
 
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-
-      - name: 📁 Preparing the artifact multimc
+      - name: 🎮 Build Minecraft structure artifact
         run: |
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-
-          mv -vf .pakku/multimc-overrides ./build/multimc/
+          mkdir -p build/minecraft-structure/.minecraft
           
-          cp -rf ./build/.cache/curseforge/overrides ./build/multimc/.minecraft
+          cp -rf ./build/.cache/curseforge/overrides/* ./build/minecraft-structure/.minecraft/
+          
+          if [ -d "./mods" ]; then
+            cp -rf ./mods/* ./build/minecraft-structure/.minecraft/mods/
+          fi
+          
+          if [ -d "./resourcepacks" ]; then
+            cp -rf ./resourcepacks ./build/minecraft-structure/.minecraft/
+          fi
+          
+          if [ -d "./shaderpacks" ]; then
+            cp -rf ./shaderpacks ./build/minecraft-structure/.minecraft/
+          fi
+          
+          if [ -d "./config/fancymenu/assets/icons" ]; then
+            cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/minecraft-structure/.minecraft/icon.png
+          fi
+          
+          mkdir -p ./build/minecraft-structure/.minecraft/saves
+          mkdir -p ./build/minecraft-structure/.minecraft/logs
+          
+          cd ./build/minecraft-structure
+          zip -r ${{ needs.info.outputs.project_full_name }}-minecraft.zip .minecraft/
 
-          cp -vf ./build/.cache/curseforge/manifest.json ./build/multimc/flame/manifest.json
-          cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/multimc/.minecraft/icon.png
-          cp -rf ./mods ./build/multimc/.minecraft/
-
-          cd ./build/multimc/
-          zip -r ${{ needs.info.outputs.project_full_name }}-multimc.zip icon.png mmc-pack.json instance.cfg .minecraft/ flame/
-      
-      - name: 🚀 Upload artifact multimc
+      - name: 🚀 Upload Minecraft structure artifact
         uses: actions/upload-artifact@v6.0.0
         with:
-          name: ${{ needs.info.outputs.project_full_name }}-multimc
-          path: ./build/multimc/${{ needs.info.outputs.project_full_name }}-multimc.zip
+          name: ${{ needs.info.outputs.project_full_name }}-minecraft
+          path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
           if-no-files-found: error
 
-      - name: 📁 Preparing the artifact server
+      - name: 🖥️ Build Server artifact
         run: |
           cd ./build/serverpack/
           mv *.zip $(basename -s .zip *.zip)-serverpack.zip
 
-      - name: 🚀 Upload artifact server
+      - name: 🚀 Upload Server artifact
         uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ needs.info.outputs.project_full_name }}-serverpack
@@ -380,7 +387,7 @@ jobs:
 
   release-github:
     name: 🚀 Release to GitHub
-    needs: [info, build-project]
+    needs: [info, build-all]
     runs-on: ubuntu-latest
     if: ${{ needs.info.outputs.make_release == 'true' }}
     outputs:
@@ -390,20 +397,20 @@ jobs:
       - name: 📦 Checkout
         uses: actions/checkout@v6.0.1
 
-      - name: 📦 Download artifact
+      - name: 📦 Download artifacts
         uses: actions/download-artifact@v7.0.0
         with:
           merge-multiple: true
 
-      - name: 🔍 Check if artifact exist
+      - name: 🔍 Check if artifacts exist
         id: check_artifact
         shell: bash
         run: |
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
             echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
           fi
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-multimc.zip ]; then
-            echo '::error::No value found for artifact `multimc.zip`.' && exit 1
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-minecraft.zip ]; then
+            echo '::error::No value found for artifact `minecraft.zip`.' && exit 1
           fi
           echo "✔️ All artifacts found"
 
@@ -429,7 +436,7 @@ jobs:
             ${{ steps.format_diff.outputs.text }}
           files: |
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
-            ${{ needs.info.outputs.project_full_name }}-multimc.zip
+            ${{ needs.info.outputs.project_full_name }}-minecraft.zip
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
