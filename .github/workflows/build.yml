@@ -61,12 +61,20 @@ jobs:
         id: latest_tag
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0 origin/main)
-          if [ -z "$tag" ]; then
-            echo "❌ Latest tag not found" && exit 1
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_VERSION="${GITHUB_REF#refs/tags/}"
+            echo "✔️ Using trigger tag: $TAG_VERSION"
+            echo "tag=$TAG_VERSION" >> $GITHUB_OUTPUT
+            echo "tag_source=trigger" >> $GITHUB_OUTPUT
           else
-            echo "✔️ Latest tag found: $tag"
-            echo "tag=$tag" >> $GITHUB_OUTPUT
+            tag=$(git describe --tags --abbrev=0 origin/main 2>/dev/null || echo "")
+            if [ -z "$tag" ]; then
+              echo "❌ Latest tag not found" && exit 1
+            else
+              echo "✔️ Latest tag found: $tag"
+              echo "tag=$tag" >> $GITHUB_OUTPUT
+              echo "tag_source=git_describe" >> $GITHUB_OUTPUT
+            fi
           fi
         
       - name: 🔍 Check pakku-lock.json in previous tag
@@ -158,37 +166,36 @@ jobs:
         uses: mukunku/tag-exists-action@v1.7.0
         id: check_tag
         with:
-          tag: ${{ steps.changelog.outputs.version }}
+          tag: ${{ steps.latest_tag.outputs.tag }}
 
       - name: 🔍 Check
         id: check
         shell: bash
         run: |
-         
           MC_VERSIONS_JSON='${{ steps.pakku_lock_info.outputs.mc_versions }}'
           MINECRAFT_VERSION=$(echo "$MC_VERSIONS_JSON" | jq -r '.[0]' | tr -d '[]"')
 
           LOADERS_JSON='${{ steps.pakku_lock_info.outputs.loaders }}'
-
           LOADER_TYPE=$(echo "$LOADERS_JSON" | jq -r 'keys[0]')
           LOADER_VERSION=$(echo "$LOADERS_JSON" | jq -r ".[keys[0]]")
 
           echo "minecraft_version=$MINECRAFT_VERSION" >> $GITHUB_OUTPUT
           echo "loader_version=$LOADER_VERSION" >> $GITHUB_OUTPUT
           echo "loader_type=$LOADER_TYPE" >> $GITHUB_OUTPUT
-
+          echo "project_name=${{ steps.pakku_info.outputs.name }}" >> $GITHUB_OUTPUT
+          echo "release_type=${{ steps.pakku_info.outputs.release_type }}" >> $GITHUB_OUTPUT
 
           if ${{ env.DEV_ENVIRONMENT == 'true' }}; then
             echo "project_version=build_#${{ github.run_number }}" >> $GITHUB_OUTPUT
           else
-            echo "project_version=${{ steps.changelog.outputs.version }}" >> $GITHUB_OUTPUT
+            echo "project_version=${{ steps.latest_tag.outputs.tag }}" >> $GITHUB_OUTPUT
           fi
 
-          echo "project_name=${{ steps.pakku_info.outputs.name }}" >> $GITHUB_OUTPUT
-          echo "release_type=${{ steps.pakku_info.outputs.release_type }}" >> $GITHUB_OUTPUT
           echo "exists=${{ steps.check_tag.outputs.exists }}" >> $GITHUB_OUTPUT
-          echo "make_release=${{ steps.check_tag.outputs.exists == 'false' && env.DEV_ENVIRONMENT == 'false' }}" >> $GITHUB_OUTPUT
-
+          
+          MAKE_RELEASE=${{ env.DEV_ENVIRONMENT == 'false' && steps.check_tag.outputs.exists == 'false' && github.ref_name == 'main' }}
+          echo "make_release=$MAKE_RELEASE" >> $GITHUB_OUTPUT
+      
       - name: 📄 Format diff
         id: format_diff
         if: ${{ steps.read_diff.outputs.diff != '' }}
@@ -205,6 +212,7 @@ jobs:
           template: |
             📃 **Name**: ${{ steps.check.outputs.project_name }}
             📃 **Release**:  `${{ steps.check.outputs.project_version }}`
+            📃 **Tag Source**: `${{ steps.latest_tag.outputs.tag_source }}`
             📃 **Release Type**: `${{ steps.check.outputs.release_type }}`
             📃 **Game Version**: `${{ steps.check.outputs.minecraft_version }}`
             📃 **Loader Type**: `${{ steps.check.outputs.loader_type }}`
@@ -214,8 +222,7 @@ jobs:
             📃 **Tag Exists**: `${{ steps.check.outputs.exists }}`
             📃 **Make Release**: `${{ steps.check.outputs.make_release }}`
             
-
-            ${{ steps.changelog_dev.outputs.description }}
+            ${{ steps.changelog.outputs.description }}
             ${{ steps.format_diff.outputs.text }}
   
   build-project:
