@@ -17,7 +17,6 @@ jobs:
   info:
     name: 🖥️ Project Info
     runs-on: ubuntu-latest
-    # if: ${{  github.repository_owner == 'TerraFirmaGreg-Team' }}
     outputs:
       project_version: ${{ steps.check.outputs.project_version }}
       project_name: ${{ steps.check.outputs.project_name }}
@@ -297,6 +296,85 @@ jobs:
 
             ${{ needs.info.outputs.changelog }}
 
+  build-minecraft:
+    name: 🎮 Build Minecraft Structure
+    needs: [info]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+
+      - name: 🔄 Replace strings
+        shell: bash
+        run: |
+          VERSION=${{ needs.info.outputs.project_version }}
+          LOADER_VERSION=${{ needs.info.outputs.loader_version }}
+          LOADER_TYPE=${{ needs.info.outputs.loader_type }}
+          MINECRAFT_VERSION=${{ needs.info.outputs.mc_version }}
+
+          sed -i -e "s/DEV/${VERSION}/g" pakku.json
+          sed -i -e "s/DEV/${VERSION}/g" config/mod-director/modpack.json
+          sed -i -e "s/DEV/${VERSION}/g" config/fancymenu/customization/gui_main_menu.txt
+
+          sed -i -e "s/DEV/${VERSION}/g" .pakku/multimc-overrides/instance.cfg
+          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
+          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/multimc-overrides/mmc-pack.json
+          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
+
+          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
+          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/server-overrides/forge-auto-install.txt
+          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
+
+      - name: 📝 Cache pakku
+        uses: actions/cache@v5.0.1
+        id: cache
+        with:
+          path: build/.cache
+          key: pakku-cache-${{ hashFiles('pakku-lock.json') }}
+          restore-keys: pakku-cache-
+
+      - name: 📦 Export modpack
+        run: |
+          java -jar pakku.jar fetch
+          java -jar pakku.jar export
+
+      - name: 📁 Preparing Minecraft structure
+        run: |
+          mkdir -p build/minecraft-structure/.minecraft
+          
+          cp -rf ./build/.cache/curseforge/overrides/* ./build/minecraft-structure/.minecraft/
+          
+          if [ -d "./mods" ]; then
+            cp -rf ./mods/* ./build/minecraft-structure/.minecraft/mods/
+          fi
+          
+          if [ -d "./resourcepacks" ]; then
+            cp -rf ./resourcepacks ./build/minecraft-structure/.minecraft/
+          fi
+          
+          if [ -d "./shaderpacks" ]; then
+            cp -rf ./shaderpacks ./build/minecraft-structure/.minecraft/
+          fi
+          
+          if [ -d "./config/fancymenu/assets/icons" ]; then
+            cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/minecraft-structure/.minecraft/icon.png
+          fi
+          
+          mkdir -p ./build/minecraft-structure/.minecraft/saves
+          mkdir -p ./build/minecraft-structure/.minecraft/logs
+
+      - name: 📦 Create Minecraft structure archive
+        run: |
+          cd ./build/minecraft-structure
+          zip -r ${{ needs.info.outputs.project_full_name }}-minecraft.zip .minecraft/
+      
+      - name: 🚀 Upload Minecraft structure artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ needs.info.outputs.project_full_name }}-minecraft
+          path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
+          if-no-files-found: error
+
   build-project:
     name: 📦 Build Project
     needs: [info]
@@ -308,8 +386,6 @@ jobs:
       - name: 🔄 Replace strings
         shell: bash
         run: |
-          set +e
-
           VERSION=${{ needs.info.outputs.project_version }}
           LOADER_VERSION=${{ needs.info.outputs.loader_version }}
           LOADER_TYPE=${{ needs.info.outputs.loader_type }}
@@ -381,7 +457,7 @@ jobs:
 
   release-github:
     name: 🚀 Release to GitHub
-    needs: [info, build-project]
+    needs: [info, build-project, build-minecraft]
     runs-on: ubuntu-latest
     if: ${{ needs.info.outputs.make_release == 'true' }}
     outputs:
@@ -391,12 +467,12 @@ jobs:
       - name: 📦 Checkout
         uses: actions/checkout@v6.0.1
 
-      - name: 📦 Download artifact
+      - name: 📦 Download artifacts
         uses: actions/download-artifact@v7.0.0
         with:
           merge-multiple: true
 
-      - name: 🔍 Check if artifact exist
+      - name: 🔍 Check if artifacts exist
         id: check_artifact
         shell: bash
         run: |
@@ -405,6 +481,9 @@ jobs:
           fi
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-multimc.zip ]; then
             echo '::error::No value found for artifact `multimc.zip`.' && exit 1
+          fi
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-minecraft.zip ]; then
+            echo '::error::No value found for artifact `minecraft.zip`.' && exit 1
           fi
           echo "✔️ All artifacts found"
 
@@ -431,6 +510,7 @@ jobs:
           files: |
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
             ${{ needs.info.outputs.project_full_name }}-multimc.zip
+            ${{ needs.info.outputs.project_full_name }}-minecraft.zip
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
