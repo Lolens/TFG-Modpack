@@ -85,6 +85,32 @@ function registerTFCItemTags(event) {
     usableOnToolRack.forEach((entry) => {
         event.add("tfc:usable_on_tool_rack", entry);
     });
+	
+    //liquid non placeable
+    event.add("tfc:nonplaceable", "minecraft:milk_bucket")
+    event.add("tfc:nonplaceable", "firmalife:bucket/yak_milk")
+    event.add("tfc:nonplaceable", "firmalife:bucket/goat_milk")
+    event.add("tfc:nonplaceable", "tfc_gurman:ox_milk_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:sheep_milk_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:alpaca_milk_bucket")
+    event.add("tfc:nonplaceable", "tfc:bucket/beer")
+    event.add("tfc:nonplaceable", "tfc:bucket/cider")
+    event.add("tfc:nonplaceable", "tfc:bucket/rum")
+    event.add("tfc:nonplaceable", "tfc:bucket/sake")
+    event.add("tfc:nonplaceable", "tfc:bucket/vodka")
+    event.add("tfc:nonplaceable", "tfc:bucket/whiskey")
+    event.add("tfc:nonplaceable", "tfc:bucket/corn_whiskey")
+    event.add("tfc:nonplaceable", "tfc:bucket/rye_whiskey")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_beer")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_cider")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_rum")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_sake")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_vodka")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_whiskey")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_corn_whiskey")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_rye_whiskey")
+    event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_mead")
+    event.add("tfc:nonplaceable", "tfc_gurman:nalivka_bucket")
 
     // Ингредиенты для закваски
     event.add("tfg:ferments_to_rennet", "tfc:food/soybean");
@@ -343,6 +369,12 @@ function registerTFCItemTags(event) {
     global.TFC_DRY_MUD_BRICKS.forEach((dryMudBrick) => {
         event.add("tfc:dry_mud_bricks", dryMudBrick);
     });
+
+    // Workaround for some of the ruin structures having tfc knives
+    event.add('tfc:knives', 'tfc:stone/knife/sedimentary')
+    event.add('tfc:knives', 'tfc:stone/knife/metamorphic')
+    event.add('tfc:knives', 'tfc:stone/knife/igneous_intrusive')
+    event.add('tfc:knives', 'tfc:stone/knife/igneous_extrusive')
 }
 
 /** @param {TagEvent.Block} event */
@@ -435,13 +467,9 @@ function registerTFCBlockTags(event) {
 
     event.add('tfc:can_be_snow_piled', 'tfc:groundcover/feather');
 
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/granite')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/diorite')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/gabbro')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/rhyolite')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/basalt')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/andesite')
-    event.add('minecraft:infiniburn_overworld', 'tfc:rock/magma/dacite')
+    global.TFC_MAGMA_BLOCKS.forEach(magma => {
+        event.add('minecraft:infiniburn_overworld', magma)
+    })
 }
 
 /** @param {TagEvent.Fluid} event */
@@ -660,8 +688,8 @@ function registerTFCFluidTags(event) {
 	});
 
 	// Can use any liquid.
-	event.add('tfc:usable_in_pot', '#forge:liquid')
-	event.add('firmalife:usable_in_vat', '#forge:liquid')
+	event.add('tfc:usable_in_pot', '#forge:neutral_fluids')
+	event.add('firmalife:usable_in_vat', '#forge:neutral_fluids')
 
     // Can use only neutral fluids.
     event.add('tfc:usable_in_barrel', '#forge:neutral_fluids');

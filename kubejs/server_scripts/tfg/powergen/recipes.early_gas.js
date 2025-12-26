@@ -218,13 +218,17 @@ function registerTFGEarlyGasRecipes(event) {
 		.inputFluids(Fluid.of('tfg:syngas', 1))
 		.EUt(-(32))
 		.duration(20*0.2)
-
+		.dimension('minecraft:overworld')
+		.dimension('minecraft:the_nether')
+	
 	// Reformate Gas
 
 	event.recipes.gtceu.gas_turbine('tfg:reformate_gas') // Gas Turbine
 		.inputFluids(Fluid.of('tfg:reformate_gas', 1))
 		.EUt(-(32))
 		.duration(20*0.6)
+		.dimension('minecraft:overworld')
+		.dimension('minecraft:the_nether')
 
 	// BTX Fuel
 
@@ -232,6 +236,8 @@ function registerTFGEarlyGasRecipes(event) {
 		.inputFluids(Fluid.of('tfg:btx_fuel', 1))
 		.EUt(-(32))
 		.duration(20*2.6)
+		.dimension('minecraft:overworld')
+		.dimension('minecraft:the_nether')
 
 	//#endregion
 
@@ -289,14 +295,14 @@ function registerTFGEarlyGasRecipes(event) {
 
 	event.recipes.gtceu.distillation_tower('tfg:methanol_distil_propylene')
 		.inputFluids(Fluid.of('gtceu:methanol', 6000))
-		.outputFluids(Fluid.of('gtceu:hydrogen', 10000), Fluid.of('gtceu:oxygen', 6000), Fluid.of('gtceu:methane', 1000), Fluid.of('gtceu:ethylene', 1000), Fluid.of('tfg:propylene', 1000))
+		.outputFluids(Fluid.of('gtceu:hydrogen', 10000), Fluid.of('gtceu:oxygen', 6000), Fluid.of('gtceu:methane', 1000), Fluid.of('gtceu:ethylene', 1000), Fluid.of('gtceu:propene', 1000))
 		.duration(20*30)
 		.EUt(GTValues.VA[GTValues.HV])
 
 	event.recipes.gtceu.cracker('tfg:crude_mixed_gas')
 		.itemInputs(Item.of('tfg:catalyser_pt_re_zsm'))
 		.inputFluids(Fluid.of('tfg:reformate_gas', 8000))
-		.inputFluids(Fluid.of('tfg:propylene', 2000))
+		.inputFluids(Fluid.of('gtceu:propene', 2000))
 		.outputFluids(Fluid.of('tfg:crude_mixed_gas', 10000))
 		.duration(20*240)
 		.EUt(GTValues.VA[GTValues.LV])
@@ -310,7 +316,8 @@ function registerTFGEarlyGasRecipes(event) {
 		.outputFluids(Fluid.of('tfg:btx_fuel', 48000))
 		.duration(20*6)
 		.EUt(GTValues.VA[GTValues.IV])
-
+		.circuit(24)
+	
 	// Loop
 
 	event.recipes.gtceu.macerator('tfg:catalyser_power')
@@ -342,9 +349,9 @@ function registerTFGEarlyGasRecipes(event) {
 
 	event.recipes.gtceu.mixer('tfg:aciditic_waste')
 		.itemInputs(Item.of('gtceu:reinforced_epoxy_resin_plate', 1))
-		.inputFluids(Fluid.of('tfg:metal_rich_solution', 100), Fluid.of('gtceu:glue', 100))
-		.outputFluids(Fluid.of('tfg:aciditic_waste', 100))
-		.itemOutputs(Item.of('tfg:loaded_resin', 1))
+		.inputFluids(Fluid.of('tfg:metal_rich_solution', 200), Fluid.of('gtceu:glue', 200))
+		.outputFluids(Fluid.of('tfg:aciditic_waste', 200))
+		.itemOutputs(Item.of('tfg:loaded_resin', 2))
 		.duration(20*15)
 		.EUt(GTValues.VA[GTValues.ULV])
 
