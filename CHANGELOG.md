@@ -1,6 +1,24 @@
 # Changelog
 
 ## Unreleased
+### Changes
+### Bug fixes
+### Translation updates
+
+## [0.11.12] - 19-12-2025
+### Changes
+- Brick Wooden Form can now be used to make unfired clay and fire clay bricks at the same rate as knapping (#2461) @Pyritie
+### Bug fixes
+- Fixed missing blocks of coke @Pyritie
+- Fixed some missing boiler recipes like charcoal blocks (#2463) @applenper
+- Fixed vulcanized latex to raw rubber vacuumizer recipe being the wrong way around (#2464) @Mqrius
+- Fixed a crash when loading a chunk that had an old blaze burner with a straw @Pyritie
+- Fixed incorrect coil tooltips on the nuclear fuel factory and liquefaction tower @Pyritie
+- Fixed new rose quartz lens not being in the pink lens tag @Pyritie
+### Translation updates
+- Chinese (simplified) @jmecn
+
+## [0.11.11] - 18-12-2025
 ### Breaking Changes
 - Rose Quartz moved namespaces, so you'll have to convert all your old rose quartz items into the new ones. You'll need to explore new chunks to find new geodes with the correct ore blocks.
 - The previous silicone rubber styrene butadiene rubber belts have been changed to a different item, so please break and recycle them before updating if you're using any.
