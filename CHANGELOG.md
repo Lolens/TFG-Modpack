@@ -3,6 +3,7 @@
 ## Unreleased
 ### Breaking Changes
 - The LCR recipe for BTX fuel now requires circuit 24, to fix a recipe conflict (#2515) @TomPlop
+- Loose stones now compress into cobblestone (without any mortar) and vice versa. So if you're currently using gravel to store your loose stones, uncraft them before updating. (#809) @Pyritie
 ### Changes
 - Added casting molds for small gears, nuggets, and rods (#2470) @glitchplaysgames714
 - Added some new illages to the hot and dry, and cold and dry climates of the world! @MVG31
@@ -18,6 +19,8 @@
 - Added quern recipes for gems into dust @Pyritie
 - Added recipes for smoke bombs, pet treats, and disguise kits, and added swapper pearls to the loot tables of various endermen @Pyritie
 - Added a little saltpeter to cassiterite veins @Pyritie
+- Removed the cleanroom requirement for level emitters since they were also craftable in a crafting grid (#2529) @Jeuvke
+- Added recipes for developing film in sealed barrels @Pyritie
 ### Bug fixes
 - Fix for food stacking everywhere! @Mqrius
 - Fixed the grappling hook crashing and sending you to the void if you use it while travelling between dimensions (#2514) @Mqrius
@@ -33,6 +36,7 @@
 - Various quest fixes and improvements @thederpysockdude123
 - Added a missing dependency that fixes the rnr roads' crazy acceleration @Pyritie
 - Fixed not being able to use aged alcohols to make vinegar (#2519) @Pyritie
+- Fix some forge fuels not having the right tag to actually be used as forge fuels @Pyritie
 ### Translation updates
 - Chinese (simplified) @jmecn
 - Ukranian @MetEnBouldry
