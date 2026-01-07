@@ -318,10 +318,23 @@ jobs:
           MINECRAFT_VERSION=${{ needs.info.outputs.mc_version }}
 
           sed -i -e "s/DEV/${VERSION}/g" pakku.json
+          sed -i -e "s/DEV/${VERSION}/g" .github/docker/docker-compose.yml
           sed -i -e "s/DEV/${VERSION}/g" config/mod-director/modpack.json
           sed -i -e "s/DEV/${VERSION}/g" config/fancymenu/customization/gui_main_menu.txt
+          sed -i -e "s/DEV/${VERSION}/g" .pakku/multimc-overrides/instance.cfg
+          sed -i -e "s/DEV/${VERSION}/g" .pakku/server-overrides/server.properties
 
-      - name: 📝 Cache pakku
+          
+          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
+          sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
+
+          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/multimc-overrides/mmc-pack.json
+          sed -i -e "s/LOADER_TYPE/${LOADER_TYPE}/g" .pakku/server-overrides/forge-auto-install.txt
+
+          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
+          sed -i -e "s/MINECRAFT_VERSION/${MINECRAFT_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
+
+      - name: 📝 Cache Pakku
         uses: actions/cache@v5.0.1
         id: cache
         with:
@@ -329,56 +342,99 @@ jobs:
           key: pakku-cache-${{ hashFiles('pakku-lock.json') }}
           restore-keys: pakku-cache-
 
-      - name: 📦 Export modpack
+      - name: 📦 Export Modpack
         run: |
           java -jar pakku.jar fetch
           java -jar pakku.jar export
 
-      - name: 🎮 Build Minecraft structure artifact
-        run: |
-          mkdir -p build/minecraft-structure/.minecraft
-          
-          cp -rf ./build/.cache/curseforge/overrides/* ./build/minecraft-structure/.minecraft/
-          
-          if [ -d "./mods" ]; then
-            cp -rf ./mods/* ./build/minecraft-structure/.minecraft/mods/
-          fi
-          
-          if [ -d "./resourcepacks" ]; then
-            cp -rf ./resourcepacks ./build/minecraft-structure/.minecraft/
-          fi
-          
-          if [ -d "./shaderpacks" ]; then
-            cp -rf ./shaderpacks ./build/minecraft-structure/.minecraft/
-          fi
-          
-          if [ -d "./config/fancymenu/assets/icons" ]; then
-            cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/minecraft-structure/.minecraft/icon.png
-          fi
-          
-          mkdir -p ./build/minecraft-structure/.minecraft/saves
-          mkdir -p ./build/minecraft-structure/.minecraft/logs
-          
-          cd ./build/minecraft-structure
-          zip -r ${{ needs.info.outputs.project_full_name }}-minecraft.zip .minecraft/
+          mkdir -p .pakku/multimc-overrides/flame
+          mkdir -p .pakku/multimc-overrides/mods
 
-      - name: 🚀 Upload Minecraft structure artifact
+      - name: 📁 Preparing the artifact CurseForge
+        run: |
+          cd ./build/curseforge/
+          mv *.zip $(basename -s .zip *.zip)-curseforge.zip
+          
+      - name: 🚀 Upload artifact CurseForge
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ needs.info.outputs.project_full_name }}-curseforge
+          path: ./build/curseforge/${{ needs.info.outputs.project_full_name }}-curseforge.zip
+          if-no-files-found: error
+
+      - name: 📁 Preparing the artifact Modrinth
+        run: |
+          cd ./build/modrinth/
+          mv *.mrpack $(basename -s .mrpack *.mrpack)-modrinth.mrpack
+
+      - name: 🚀 Upload artifact Modrinth
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ needs.info.outputs.project_full_name }}-modrinth
+          path: ./build/modrinth/${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
+          if-no-files-found: warn
+
+      - name: 📁 Preparing the artifact MultiMC
+        run: |
+          mkdir -p .pakku/multimc-overrides/flame
+          mkdir -p .pakku/multimc-overrides/mods
+
+          mv -vf .pakku/multimc-overrides ./build/multimc
+
+          # Delete mods with export: false from ./mods directory
+          echo "Checking for mods with export: false..."
+          if [ -f "./pakku.json" ]; then
+            # Extract mod slugs with export: false and delete corresponding jar files
+            for mod in $(jq -r 'to_entries[] | select(.value.export == false) | .key' ./pakku.json); do
+              echo "Looking for mod: $mod"
+              find ./mods -name "${mod}*.jar" -type f -delete 2>/dev/null && echo "Deleted $mod jar files" || echo "No $mod jar files found"
+            done
+          else
+            echo "pakku.json not found, skipping export:false mod removal"
+          fi
+
+          
+          cp -rf ./build/.cache/curseforge/overrides ./build/multimc/.minecraft
+
+          cp -vf ./build/.cache/curseforge/manifest.json ./build/multimc/flame/manifest.json
+          cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/multimc/.minecraft/icon.png
+          
+          cp -rf ./mods ./build/multimc/.minecraft/
+
+          cd ./build/multimc/
+          zip -r ${{ needs.info.outputs.project_full_name }}-multimc.zip icon.png mmc-pack.json instance.cfg .minecraft/ flame/
+      
+      - name: 🚀 Upload artifact MultiMC
         uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ needs.info.outputs.project_full_name }}-minecraft
           path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
           if-no-files-found: error
 
-      - name: 🖥️ Build Server artifact
+      - name: 📁 Preparing the artifact Server
         run: |
           cd ./build/serverpack/
           mv *.zip $(basename -s .zip *.zip)-serverpack.zip
 
-      - name: 🚀 Upload Server artifact
+      - name: 🚀 Upload artifact Server
         uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ needs.info.outputs.project_full_name }}-serverpack
           path: ./build/serverpack/${{ needs.info.outputs.project_full_name }}-serverpack.zip
+          if-no-files-found: error
+
+      - name: 📁 Preparing the artifact Docker
+        run: |
+          mv -vf .pakku/docker-overrides ./build/docker
+
+          cd ./build/docker/
+          mv docker-compose.yml "${{ needs.info.outputs.project_full_name }}-docker.yml"
+
+      - name: 🚀 Upload Docker Artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ needs.info.outputs.project_full_name }}-docker
+          path: ./build/docker/${{ needs.info.outputs.project_full_name }}-docker.yml
           if-no-files-found: error
 
   release-github:
@@ -405,8 +461,11 @@ jobs:
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
             echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
           fi
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-minecraft.zip ]; then
-            echo '::error::No value found for artifact `minecraft.zip`.' && exit 1
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-multimc.zip ]; then
+            echo '::error::No value found for artifact `multimc.zip`.' && exit 1
+          fi
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-docker.yml ]; then
+            echo '::error::No value found for artifact `docker.yml`.' && exit 1
           fi
           echo "✔️ All artifacts found"
 
@@ -432,7 +491,8 @@ jobs:
             ${{ steps.format_diff.outputs.text }}
           files: |
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
-            ${{ needs.info.outputs.project_full_name }}-minecraft.zip
+            ${{ needs.info.outputs.project_full_name }}-multimc.zip
+            ${{ needs.info.outputs.project_full_name }}-docker.yml
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
