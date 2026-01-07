@@ -111,6 +111,21 @@ function registerTFCItemTags(event) {
     event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_rye_whiskey")
     event.add("tfc:nonplaceable", "tfcagedalcohol:bucket/aged_mead")
     event.add("tfc:nonplaceable", "tfc_gurman:nalivka_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:coffee_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:tea_mint_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:tea_chamomile_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:tea_rosehip_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:tea_nettle_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:cocoa_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:compote_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:kvass_bucket")
+    event.add("tfc:nonplaceable", "tfc_gurman:lemonade_bucket")
+    event.add("tfc:nonplaceable", "firmalife:bucket/mead")
+    event.add("tfc:nonplaceable", "firmalife:bucket/red_wine")
+    event.add("tfc:nonplaceable", "firmalife:bucket/white_wine")
+    event.add("tfc:nonplaceable", "firmalife:bucket/rose_wine")
+    event.add("tfc:nonplaceable", "firmalife:bucket/sparkling_wine")
+    event.add("tfc:nonplaceable", "firmalife:bucket/dessert_wine")
 
     // Ингредиенты для закваски
     event.add("tfg:ferments_to_rennet", "tfc:food/soybean");
@@ -392,6 +407,11 @@ function registerTFCItemTags(event) {
     event.add('tfc:knives', 'tfc:stone/knife/metamorphic')
     event.add('tfc:knives', 'tfc:stone/knife/igneous_intrusive')
     event.add('tfc:knives', 'tfc:stone/knife/igneous_extrusive')
+
+    //greens and browns
+    event.remove('tfc:compost_browns_low', '#tfc:fallen_leaves')
+    event.add('tfc:compost_greens_low', '#tfc:fallen_leaves')
+    event.add('tfc:compost_greens_low', '#minecraft:leaves')
 }
 
 /** @param {TagEvent.Block} event */
@@ -476,6 +496,7 @@ function registerTFCBlockTags(event) {
     const brick_blacklist = "drying|slab|stairs|wall|additionalplacements";
     event.add("tfc:bloomery_insulation", `/^(?=.*brick)(?!.*(${brick_blacklist})).*/`);
     event.add("tfc:forge_insulation", `/^(?=.*brick)(?!.*(${brick_blacklist})).*/`);
+    event.add("tfc:forge_insulation", 'create:depot');
 
     global.TFC_STONE_TYPES.forEach((stone) => {
         event.add("minecraft:stone_buttons", `tfc:rock/button/${stone}`);
