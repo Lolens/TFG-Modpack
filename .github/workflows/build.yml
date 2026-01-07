@@ -17,6 +17,7 @@ jobs:
   info:
     name: 🖥️ Project Info
     runs-on: ubuntu-latest
+    if: ${{  github.repository_owner == 'TerraFirmaGreg-Team' }}
     outputs:
       project_version: ${{ steps.check.outputs.project_version }}
       project_name: ${{ steps.check.outputs.project_name }}
@@ -27,7 +28,7 @@ jobs:
       loader_type: ${{ steps.check.outputs.loader_type }}
       release_type: ${{ steps.check.outputs.release_type }}
       diff: ${{ steps.read_diff.outputs.diff }}
-      exists: ${{ steps.check_tag.outputs.exists }}
+      exists: ${{ steps.check.outputs.exists }}
       make_release: ${{ steps.check.outputs.make_release }}
       make_pr: ${{ steps.check.outputs.make_pr }}
     
@@ -61,20 +62,16 @@ jobs:
         id: latest_tag
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0 origin/main 2>/dev/null || true)
-      
+          tag=$(git describe --tags --abbrev=0 origin/main)
           if [ -z "$tag" ]; then
-            echo "ℹ️ No previous tag found (first build)"
-            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "❌ Latest tag not found" && exit 1
           else
             echo "✔️ Latest tag found: $tag"
             echo "tag=$tag" >> $GITHUB_OUTPUT
-            echo "exists=true" >> $GITHUB_OUTPUT
           fi
-
+        
       - name: 🔍 Check pakku-lock.json in previous tag
         id: check_pakku_lock_prev
-        if: steps.latest_tag.outputs.exists == 'true'
         shell: bash
         run: |
           if git cat-file -e ${{ steps.latest_tag.outputs.tag }}:./pakku-lock.json 2>/dev/null; then
@@ -84,11 +81,10 @@ jobs:
             echo "❌ File pakku-lock.json not found in previous tag"
             echo "file_found=false" >> $GITHUB_OUTPUT
           fi
-
         
       - name: 📁 Check and copy pakku-lock.json from previous tag
         id: check_copy_lock
-        if: steps.latest_tag.outputs.exists == 'true' && steps.check_pakku_lock_prev.outputs.file_found == 'true'
+        if: steps.check_pakku_lock_prev.outputs.file_found
         shell: bash
         run: |
           git show tags/${{ steps.latest_tag.outputs.tag }}:./pakku-lock.json > ./pakku-lock-prev.json
@@ -98,9 +94,17 @@ jobs:
             echo "❌ Error: File pakku-lock-prev.json is empty or not created" && exit 1
           fi
         
+      # - name: 📦 Download pakku.jar
+      #   id: download_pakku
+      #   if: steps.check_pakku_lock_prev.outputs.file_found
+      #   shell: bash
+      #   run: |
+      #     curl https://github.com/juraj-hrivnak/pakku/releases/latest/download/pakku.jar -o pakku.jar -L -J
+      #     echo "✔️ Downloaded pakku.jar "
+        
       - name: 🔄 Run pakku diff
         id: pakku_diff
-        if: steps.check_pakku_lock_prev.outputs.file_found == 'true'
+        if: steps.check_pakku_lock_prev.outputs.file_found
         shell: bash
         run: |
           java -jar pakku.jar diff -v --markdown PROJECTS_DIFF.md ./pakku-lock-prev.json ./pakku-lock.json
@@ -112,7 +116,7 @@ jobs:
         
       - name: 📝 Read PROJECTS_DIFF.md to variable
         id: read_diff
-        if: steps.check_pakku_lock_prev.outputs.file_found == 'true'
+        if: steps.check_pakku_lock_prev.outputs.file_found
         shell: bash
         run: |
           echo "📝 Reading PROJECTS_DIFF.md to variable..."
@@ -174,6 +178,7 @@ jobs:
           echo "loader_version=$LOADER_VERSION" >> $GITHUB_OUTPUT
           echo "loader_type=$LOADER_TYPE" >> $GITHUB_OUTPUT
 
+
           if ${{ env.DEV_ENVIRONMENT == 'true' }}; then
             echo "project_version=build_#${{ github.run_number }}" >> $GITHUB_OUTPUT
           else
@@ -182,8 +187,9 @@ jobs:
 
           echo "project_name=${{ steps.pakku_info.outputs.name }}" >> $GITHUB_OUTPUT
           echo "release_type=${{ steps.pakku_info.outputs.release_type }}" >> $GITHUB_OUTPUT
+          echo "exists=${{ steps.check_tag.outputs.exists }}" >> $GITHUB_OUTPUT
           echo "make_release=${{ steps.check_tag.outputs.exists == 'false' && env.DEV_ENVIRONMENT == 'false' }}" >> $GITHUB_OUTPUT
-          echo "make_pr=${{ steps.check_tag.outputs.exists == 'false' && env.DEV_ENVIRONMENT == 'true' }}" >> $GITHUB_OUTPUT
+          echo "make_pr=${{ steps.check_tag.outputs.exists  == 'false'  && env.DEV_ENVIRONMENT == 'true' }}" >> $GITHUB_OUTPUT
 
       - name: 📄 Format diff
         id: format_diff
@@ -207,7 +213,7 @@ jobs:
             📃 **Loader Version**: `${{ steps.check.outputs.loader_version }}`
 
             📃 **Dev Environment**: `${{ env.DEV_ENVIRONMENT }}`
-            📃 **Tag Exists**: `${{ steps.check_tag.outputs.exists }}`
+            📃 **Tag Exists**: `${{ steps.check.outputs.exists }}`
             📃 **Make Pull Request**: `${{ steps.check.outputs.make_pr }}`
             📃 **Make Release**: `${{ steps.check.outputs.make_release }}`
             
@@ -301,8 +307,8 @@ jobs:
 
             ${{ needs.info.outputs.changelog }}
 
-  build-all:
-    name: 📦 Build All Artifacts
+  build-project:
+    name: 📦 Build Project
     needs: [info]
     runs-on: ubuntu-latest
     steps:
@@ -312,10 +318,13 @@ jobs:
       - name: 🔄 Replace strings
         shell: bash
         run: |
+          set +e
+
           VERSION=${{ needs.info.outputs.project_version }}
           LOADER_VERSION=${{ needs.info.outputs.loader_version }}
           LOADER_TYPE=${{ needs.info.outputs.loader_type }}
           MINECRAFT_VERSION=${{ needs.info.outputs.mc_version }}
+
 
           sed -i -e "s/DEV/${VERSION}/g" pakku.json
           sed -i -e "s/DEV/${VERSION}/g" .github/docker/docker-compose.yml
@@ -344,6 +353,7 @@ jobs:
 
       - name: 📦 Export Modpack
         run: |
+          # curl https://github.com/juraj-hrivnak/pakku/releases/latest/download/pakku.jar -o pakku.jar -L -J
           java -jar pakku.jar fetch
           java -jar pakku.jar export
 
@@ -407,8 +417,8 @@ jobs:
       - name: 🚀 Upload artifact MultiMC
         uses: actions/upload-artifact@v6.0.0
         with:
-          name: ${{ needs.info.outputs.project_full_name }}-minecraft
-          path: ./build/minecraft-structure/${{ needs.info.outputs.project_full_name }}-minecraft.zip
+          name: ${{ needs.info.outputs.project_full_name }}-multimc
+          path: ./build/multimc/${{ needs.info.outputs.project_full_name }}-multimc.zip
           if-no-files-found: error
 
       - name: 📁 Preparing the artifact Server
@@ -439,7 +449,7 @@ jobs:
 
   release-github:
     name: 🚀 Release to GitHub
-    needs: [info, build-all]
+    needs: [info, build-project]
     runs-on: ubuntu-latest
     if: ${{ needs.info.outputs.make_release == 'true' }}
     outputs:
@@ -449,15 +459,21 @@ jobs:
       - name: 📦 Checkout
         uses: actions/checkout@v6.0.1
 
-      - name: 📦 Download artifacts
+      - name: 📦 Download artifact
         uses: actions/download-artifact@v7.0.0
         with:
           merge-multiple: true
 
-      - name: 🔍 Check if artifacts exist
+      - name: 🔍 Check if artifact exist
         id: check_artifact
         shell: bash
         run: |
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-curseforge.zip ]; then
+            echo '::error::No value found for artifact `curseforge.zip`.' && exit 1
+          fi
+          # if [ ! -f ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack ]; then
+          #   echo '::error::No value found for artifact `modrinth.mrpack`.' && exit 1
+          # fi
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
             echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
           fi
@@ -490,9 +506,135 @@ jobs:
             ${{ needs.info.outputs.changelog }}
             ${{ steps.format_diff.outputs.text }}
           files: |
+            ${{ needs.info.outputs.project_full_name }}-curseforge.zip
+            ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
             ${{ needs.info.outputs.project_full_name }}-multimc.zip
             ${{ needs.info.outputs.project_full_name }}-docker.yml
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  release-curseforge:
+    name: 🚀 Release to CurseForge
+    needs: [info, build-project, release-github]
+    runs-on: ubuntu-latest
+    if: ${{ needs.info.outputs.make_release == 'true' }}
+    outputs:
+      id: ${{ steps.release.outputs.id }}
+
+    steps:
+      - name: 🔒 Check if CURSEFORGE_TOKEN exist
+        shell: bash
+        run: |
+          if [ "${{ secrets.CURSEFORGE_TOKEN }}" == '' ]; then
+            echo '::error::No value found for secret key `CURSEFORGE_TOKEN`. See https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository' && exit 1
+          fi  
+
+      - name: 📦 Download artifact
+        uses: actions/download-artifact@v7.0.0
+        with:
+          merge-multiple: true
+
+      - name: 🔍 Check if artifact exist
+        id: check_artifact
+        shell: bash
+        run: |
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-curseforge.zip ]; then
+            echo '::error::No value found for artifact `curseforge.zip`.' && exit 1
+          fi
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
+            echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
+          fi
+          echo "✔️ All artifacts found"
+
+      - name: 🚀 Upload Curseforge
+        id: release
+        uses: Xikaro/upload-curseforge-modpack-action@1.1.1
+        with:
+          api-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          project-id: ${{ vars.CURSEFORGE_ID }}
+          display-name: ${{ needs.info.outputs.project_full_name }}
+          modpack-path: ${{ needs.info.outputs.project_full_name }}-curseforge.zip
+          server-display-name: ${{ needs.info.outputs.project_full_name }}-serverpack
+          modpack-server-path: ${{ needs.info.outputs.project_full_name }}-serverpack.zip
+          changelog: |
+            ${{ needs.info.outputs.changelog }}
+            ${{ needs.info.outputs.diff }}
+          changelog-format: markdown
+          game-version: ${{ needs.info.outputs.mc_version }}
+          release-type: ${{ needs.info.outputs.release_type }}
+
+  release-modrinth:
+      name: 🚀 Release to Modrinth
+      needs: [info, build-project, release-github]
+      runs-on: ubuntu-latest
+      if: ${{ needs.info.outputs.make_release == 'true' }}
+      outputs:
+        id: ${{ steps.release.outputs.id }}
+
+      steps:
+        - name: 🔒 Check if MODRINTH_API_TOKEN exist
+          shell: bash
+          run: |
+            if [ "${{ secrets.MODRINTH_TOKEN }}" == '' ]; then
+              echo '::error::No value found for secret key `MODRINTH_TOKEN`. See https://docs.github.com/en/  actionssecurity-guides/  encrypted-secrets#creating-encrypted-secrets-for-a-repository' && exit 1
+            fi  
+    
+        - name: 📦 Download artifact
+          uses: actions/download-artifact@v7.0.0
+          with:
+            merge-multiple: true
+
+        - name: 🔍 Check if artifact exist
+          id: check_artifact
+          shell: bash
+          run: |
+            if [ ! -f ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack ]; then
+              echo '::error::No value found for artifact `modrinth.mrpack`.' && exit 1
+            fi
+            echo "✔️ All artifacts found"
+    
+        # - name: 🚀 Upload Modrinth
+        #   id: release
+        #   uses: Xikaro/upload-curseforge-modpack-action@1.1.1
+        #   with:
+        #     api-token: ${{ secrets.MODRINTH_TOKEN }}
+        #     project-id: ${{ vars.MODRINTH_ID }}
+        #     modpack-path: ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
+        #     changelog: ${{ needs.info.outputs.changelog }}
+        #     changelog-format: markdown
+        #     game-version: ${{ needs.info.outputs.mc_version }}
+        #     display-name: ${{ needs.info.outputs.project_full_name }}
+
+        #     release-type: ${{ needs.info.outputs.release_type }}
+
+  discord-message:
+    name: 📱 Discord Message
+    needs: [info, release-github, release-curseforge]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✂️ Truncate Changelog
+        id: truncated
+        uses: cisox/read-more-action@v1.0.2
+        with:
+          text: '${{ needs.info.outputs.changelog }}'
+          max_chars: '1450'
+
+      - name: 📨 Send Discord message
+        uses: hugoalh/send-discord-webhook-ghaction@v7.0.5
+        with:
+          key: ${{ secrets.DISCORD_RELEASES }}
+          username: "TerraFirmaGreg"
+          avatar_url: "https://raw.githubusercontent.com/TerraFirmaGreg-Team/.github/main/branding/logo.png"
+          content_links_no_embed: .+
+          content: |
+            **Release**: `${{ needs.info.outputs.project_version }}`
+            **Release Type**: `${{ needs.info.outputs.release_type }}`
+            **Game Version**: `${{ needs.info.outputs.mc_version }}`
+
+            [CurseForge](https://www.curseforge.com/minecraft/modpacks/terrafirmagreg-modern/files/${{ needs.release-curseforge.outputs.id }}) • [GitHub](${{ needs.release-github.outputs.url }}) • [Issues](https://github.com/${{ github.repository }}/issues)
+            ```markdown
+            ${{ steps.truncated.outputs.text  }}
+            - ...```
+            ** [Read more...](${{ needs.release-github.outputs.url }}) **
