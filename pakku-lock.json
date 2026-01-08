@@ -13558,7 +13558,7 @@
                 "64uacGcEw697jVGs"
             ],
             "type": "MOD",
-            "side": "BOTH",
+            "side": "CLIENT",
             "slug": {
                 "curseforge": "tfcgenviewer",
                 "modrinth": "tfcgenviewer"
