@@ -279,7 +279,7 @@
         },
 
         "ftb-backups-2": {
-            "side": "BOTH",
+            "side": "SERVER",
             "export": true
         },
         "ftb-chunks-forge": {
