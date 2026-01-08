@@ -420,19 +420,19 @@ jobs:
           path: ./build/serverpack/${{ needs.info.outputs.project_full_name }}-serverpack.zip
           if-no-files-found: error
 
-      # - name: 📁 Preparing the artifact Docker
-      #   run: |
-      #     mv -vf .pakku/docker-overrides ./build/docker
+      - name: 📁 Preparing the artifact Docker
+        run: |
+          mv -vf .pakku/docker-overrides ./build/docker
 
-      #     cd ./build/docker/
-      #     mv docker-compose.yml "${{ needs.info.outputs.project_full_name }}-docker.yml"
+          cd ./build/docker/
+          mv docker-compose.yml "${{ needs.info.outputs.project_full_name }}-docker.yml"
 
-      # - name: 🚀 Upload Docker Artifact
-      #   uses: actions/upload-artifact@v6.0.0
-      #   with:
-      #     name: ${{ needs.info.outputs.project_full_name }}-docker
-      #     path: ./build/docker/${{ needs.info.outputs.project_full_name }}-docker.yml
-      #     if-no-files-found: error
+      - name: 🚀 Upload Docker Artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ needs.info.outputs.project_full_name }}-docker
+          path: ./build/docker/${{ needs.info.outputs.project_full_name }}-docker.yml
+          if-no-files-found: error
 
   release-github:
     name: 🚀 Release to GitHub
