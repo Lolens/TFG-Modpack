@@ -356,58 +356,27 @@ jobs:
           java -jar pakku.jar fetch
           java -jar pakku.jar export
 
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-
-      - name: 📁 Preparing the artifact CurseForge
+      - name: 📁 Build .minecraft artifact
         run: |
-          cd ./build/curseforge/
-          mv *.zip $(basename -s .zip *.zip)-curseforge.zip
-          
-      - name: 🚀 Upload artifact CurseForge
+          mkdir -p ./build/minecraft
+
+          unzip ./build/curseforge/*.zip -d ./build/minecraft/cf
+
+          mkdir -p ./build/minecraft/.minecraft
+          cp -rf ./build/minecraft/cf/overrides/* ./build/minecraft/.minecraft/
+          cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/minecraft/.minecraft/icon.png
+
+          cd ./build/minecraft
+          zip -r ${{ needs.info.outputs.project_full_name }}-.minecraft.zip .minecraft/
+
+      - name: 🚀 Upload .minecraft artifact
         uses: actions/upload-artifact@v6.0.0
         with:
-          name: ${{ needs.info.outputs.project_full_name }}-curseforge
-          path: ./build/curseforge/${{ needs.info.outputs.project_full_name }}-curseforge.zip
+          name: ${{ needs.info.outputs.project_full_name }}-.minecraft
+          path: ./build/minecraft/${{ needs.info.outputs.project_full_name }}-.minecraft.zip
           if-no-files-found: error
 
-      - name: 📁 Preparing the artifact MultiMC
-        run: |
-          mkdir -p .pakku/multimc-overrides/flame
-          mkdir -p .pakku/multimc-overrides/mods
-
-          mv -vf .pakku/multimc-overrides ./build/multimc
-
-          # Delete mods with export: false from ./mods directory
-          echo "Checking for mods with export: false..."
-          if [ -f "./pakku.json" ]; then
-            # Extract mod slugs with export: false and delete corresponding jar files
-            for mod in $(jq -r 'to_entries[] | select(.value.export == false) | .key' ./pakku.json); do
-              echo "Looking for mod: $mod"
-              find ./mods -name "${mod}*.jar" -type f -delete 2>/dev/null && echo "Deleted $mod jar files" || echo "No $mod jar files found"
-            done
-          else
-            echo "pakku.json not found, skipping export:false mod removal"
-          fi
-
-          
-          cp -rf ./build/.cache/curseforge/overrides ./build/multimc/.minecraft
-
-          cp -vf ./build/.cache/curseforge/manifest.json ./build/multimc/flame/manifest.json
-          cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/multimc/.minecraft/icon.png
-          
-          cp -rf ./mods ./build/multimc/.minecraft/
-
-          cd ./build/multimc/
-          zip -r ${{ needs.info.outputs.project_full_name }}-multimc.zip icon.png mmc-pack.json instance.cfg .minecraft/ flame/
       
-      - name: 🚀 Upload artifact MultiMC
-        uses: actions/upload-artifact@v6.0.0
-        with:
-          name: ${{ needs.info.outputs.project_full_name }}-multimc
-          path: ./build/multimc/${{ needs.info.outputs.project_full_name }}-multimc.zip
-          if-no-files-found: error
-
       - name: 📁 Preparing the artifact Server
         run: |
           cd ./build/serverpack/
@@ -455,17 +424,11 @@ jobs:
         id: check_artifact
         shell: bash
         run: |
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-curseforge.zip ]; then
-            echo '::error::No value found for artifact `curseforge.zip`.' && exit 1
+          if [ ! -f ${{ needs.info.outputs.project_full_name }}-.minecraft.zip ]; then
+            echo '::error::No value found for artifact `.minecraft.zip`.' && exit 1
           fi
-          # if [ ! -f ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack ]; then
-          #   echo '::error::No value found for artifact `modrinth.mrpack`.' && exit 1
-          # fi
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
             echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
-          fi
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-multimc.zip ]; then
-            echo '::error::No value found for artifact `multimc.zip`.' && exit 1
           fi
           if [ ! -f ${{ needs.info.outputs.project_full_name }}-docker.yml ]; then
             echo '::error::No value found for artifact `docker.yml`.' && exit 1
@@ -493,10 +456,8 @@ jobs:
             ${{ needs.info.outputs.changelog }}
             ${{ steps.format_diff.outputs.text }}
           files: |
-            ${{ needs.info.outputs.project_full_name }}-curseforge.zip
-            ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
-            ${{ needs.info.outputs.project_full_name }}-multimc.zip
+            ${{ needs.info.outputs.project_full_name }}-.minecraft.zip
             ${{ needs.info.outputs.project_full_name }}-docker.yml
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
