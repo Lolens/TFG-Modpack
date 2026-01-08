@@ -13,7 +13,7 @@ concurrency:
 env:
   DEV_ENVIRONMENT: ${{ github.ref_name != 'main' }}
 
-jobs:    
+jobs:
   info:
     name: 🖥️ Project Info
     runs-on: ubuntu-latest
@@ -30,13 +30,13 @@ jobs:
       exists: ${{ steps.check.outputs.exists }}
       make_release: ${{ steps.check.outputs.make_release }}
       make_pr: ${{ steps.check.outputs.make_pr }}
-    
+
     steps:
       - name: 📦 Checkout
         uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0
-        
+
       - name: 🔍 Check pakku-lock.json
         id: check_pakku_lock
         shell: bash
@@ -46,7 +46,7 @@ jobs:
           else
             echo "✔️ pakku-lock.json"
           fi
-        
+
       - name: 🔍 Check pakku.json
         id: check_pakku
         shell: bash
@@ -68,7 +68,7 @@ jobs:
             echo "✔️ Latest tag found: $tag"
             echo "tag=$tag" >> $GITHUB_OUTPUT
           fi
-        
+
       - name: 🔍 Check pakku-lock.json in previous tag
         id: check_pakku_lock_prev
         shell: bash
@@ -80,7 +80,7 @@ jobs:
             echo "❌ File pakku-lock.json not found in previous tag"
             echo "file_found=false" >> $GITHUB_OUTPUT
           fi
-        
+
       - name: 📁 Check and copy pakku-lock.json from previous tag
         id: check_copy_lock
         if: steps.check_pakku_lock_prev.outputs.file_found
@@ -92,7 +92,7 @@ jobs:
           else
             echo "❌ Error: File pakku-lock-prev.json is empty or not created" && exit 1
           fi
-        
+
       # - name: 📦 Download pakku.jar
       #   id: download_pakku
       #   if: steps.check_pakku_lock_prev.outputs.file_found
@@ -100,7 +100,7 @@ jobs:
       #   run: |
       #     curl https://github.com/juraj-hrivnak/pakku/releases/latest/download/pakku.jar -o pakku.jar -L -J
       #     echo "✔️ Downloaded pakku.jar "
-        
+
       - name: 🔄 Run pakku diff
         id: pakku_diff
         if: steps.check_pakku_lock_prev.outputs.file_found
@@ -112,7 +112,7 @@ jobs:
           else
             echo "❌ Error: File PROJECTS_DIFF.md not created" && exit 1
           fi
-        
+
       - name: 📝 Read PROJECTS_DIFF.md to variable
         id: read_diff
         if: steps.check_pakku_lock_prev.outputs.file_found
@@ -146,7 +146,7 @@ jobs:
           path: CHANGELOG.md
           version: "unreleased"
         continue-on-error: true
-        
+
       - name: 📄 Changelog Parser
         id: changelog
         uses: coditory/changelog-parser@v1.0.2
@@ -164,7 +164,7 @@ jobs:
         id: check
         shell: bash
         run: |
-         
+
           MC_VERSIONS_JSON='${{ steps.pakku_lock_info.outputs.mc_versions }}'
           MINECRAFT_VERSION=$(echo "$MC_VERSIONS_JSON" | jq -r '.[0]' | tr -d '[]"')
 
@@ -215,11 +215,11 @@ jobs:
             📃 **Tag Exists**: `${{ steps.check.outputs.exists }}`
             📃 **Make Pull Request**: `${{ steps.check.outputs.make_pr }}`
             📃 **Make Release**: `${{ steps.check.outputs.make_release }}`
-            
+
 
             ${{ steps.changelog_dev.outputs.description }}
             ${{ steps.format_diff.outputs.text }}
-  
+
   create-pr:
     name: 🤝 Create Release PR
     needs: [info]
@@ -332,7 +332,7 @@ jobs:
           sed -i -e "s/DEV/${VERSION}/g" .pakku/server-overrides/server.properties
           sed -i -e "s/DEV/${VERSION}/g" .pakku/docker-overrides/docker-compose.yml
 
-          
+
           sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
           sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/server-overrides/forge-auto-install.txt
 
@@ -358,6 +358,23 @@ jobs:
 
       - name: 📁 Build .minecraft artifact
         run: |
+          mkdir -p .pakku/multimc-overrides/flame
+          mkdir -p .pakku/multimc-overrides/mods
+
+          mv -vf .pakku/multimc-overrides ./build/multimc
+
+          # Delete mods with export: false from ./mods directory
+          echo "Checking for mods with export: false..."
+          if [ -f "./pakku.json" ]; then
+            # Extract mod slugs with export: false and delete corresponding jar files
+            for mod in $(jq -r 'to_entries[] | select(.value.export == false) | .key' ./pakku.json); do
+              echo "Looking for mod: $mod"
+              find ./mods -name "${mod}*.jar" -type f -delete 2>/dev/null && echo "Deleted $mod jar files" || echo "No $mod jar files found"
+            done
+          else
+            echo "pakku.json not found, skipping export:false mod removal"
+          fi
+
           mkdir -p ./build/minecraft
 
           unzip ./build/curseforge/*.zip -d ./build/minecraft/cf
@@ -365,6 +382,7 @@ jobs:
           mkdir -p ./build/minecraft/.minecraft
           cp -rf ./build/minecraft/cf/overrides/* ./build/minecraft/.minecraft/
           cp -vf ./config/fancymenu/assets/icons/icon128x128.png ./build/minecraft/.minecraft/icon.png
+          cp -rf ./mods ./build/minecraft/.minecraft/
 
           cd ./build/minecraft
           zip -r ${{ needs.info.outputs.project_full_name }}-.minecraft.zip .minecraft/
@@ -376,7 +394,7 @@ jobs:
           path: ./build/minecraft/${{ needs.info.outputs.project_full_name }}-.minecraft.zip
           if-no-files-found: error
 
-      
+
       - name: 📁 Preparing the artifact Server
         run: |
           cd ./build/serverpack/
@@ -462,4 +480,3 @@ jobs:
           prerelease: ${{ needs.info.outputs.release_type != 'release' }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
