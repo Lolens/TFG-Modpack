@@ -52,6 +52,9 @@
         "chunk-animator": {
             "side": "CLIENT"
         },
+        "chunky": {
+            "side": "CLIENT"
+        },
         "better-loading-screen": {
             "side": "CLIENT"
         },
