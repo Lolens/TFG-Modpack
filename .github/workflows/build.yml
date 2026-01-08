@@ -326,11 +326,11 @@ jobs:
 
 
           sed -i -e "s/DEV/${VERSION}/g" pakku.json
-          sed -i -e "s/DEV/${VERSION}/g" .github/docker/docker-compose.yml
           sed -i -e "s/DEV/${VERSION}/g" config/mod-director/modpack.json
           sed -i -e "s/DEV/${VERSION}/g" config/fancymenu/customization/gui_main_menu.txt
           sed -i -e "s/DEV/${VERSION}/g" .pakku/multimc-overrides/instance.cfg
           sed -i -e "s/DEV/${VERSION}/g" .pakku/server-overrides/server.properties
+          sed -i -e "s/DEV/${VERSION}/g" .pakku/docker-overrides/docker-compose.yml
 
           
           sed -i -e "s/LOADER_VERSION/${LOADER_VERSION}/g" .pakku/multimc-overrides/mmc-pack.json
@@ -370,18 +370,6 @@ jobs:
           name: ${{ needs.info.outputs.project_full_name }}-curseforge
           path: ./build/curseforge/${{ needs.info.outputs.project_full_name }}-curseforge.zip
           if-no-files-found: error
-
-      - name: 📁 Preparing the artifact Modrinth
-        run: |
-          cd ./build/modrinth/
-          mv *.mrpack $(basename -s .mrpack *.mrpack)-modrinth.mrpack
-
-      - name: 🚀 Upload artifact Modrinth
-        uses: actions/upload-artifact@v6.0.0
-        with:
-          name: ${{ needs.info.outputs.project_full_name }}-modrinth
-          path: ./build/modrinth/${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
-          if-no-files-found: warn
 
       - name: 📁 Preparing the artifact MultiMC
         run: |
@@ -432,19 +420,19 @@ jobs:
           path: ./build/serverpack/${{ needs.info.outputs.project_full_name }}-serverpack.zip
           if-no-files-found: error
 
-      - name: 📁 Preparing the artifact Docker
-        run: |
-          mv -vf .pakku/docker-overrides ./build/docker
+      # - name: 📁 Preparing the artifact Docker
+      #   run: |
+      #     mv -vf .pakku/docker-overrides ./build/docker
 
-          cd ./build/docker/
-          mv docker-compose.yml "${{ needs.info.outputs.project_full_name }}-docker.yml"
+      #     cd ./build/docker/
+      #     mv docker-compose.yml "${{ needs.info.outputs.project_full_name }}-docker.yml"
 
-      - name: 🚀 Upload Docker Artifact
-        uses: actions/upload-artifact@v6.0.0
-        with:
-          name: ${{ needs.info.outputs.project_full_name }}-docker
-          path: ./build/docker/${{ needs.info.outputs.project_full_name }}-docker.yml
-          if-no-files-found: error
+      # - name: 🚀 Upload Docker Artifact
+      #   uses: actions/upload-artifact@v6.0.0
+      #   with:
+      #     name: ${{ needs.info.outputs.project_full_name }}-docker
+      #     path: ./build/docker/${{ needs.info.outputs.project_full_name }}-docker.yml
+      #     if-no-files-found: error
 
   release-github:
     name: 🚀 Release to GitHub
@@ -514,126 +502,3 @@ jobs:
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  release-curseforge:
-    name: 🚀 Release to CurseForge
-    needs: [info, build-project, release-github]
-    runs-on: ubuntu-latest
-    if: ${{ needs.info.outputs.make_release == 'true' }}
-    outputs:
-      id: ${{ steps.release.outputs.id }}
-
-    steps:
-      - name: 🔒 Check if CURSEFORGE_TOKEN exist
-        shell: bash
-        run: |
-          if [ "${{ secrets.CURSEFORGE_TOKEN }}" == '' ]; then
-            echo '::error::No value found for secret key `CURSEFORGE_TOKEN`. See https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository' && exit 1
-          fi  
-
-      - name: 📦 Download artifact
-        uses: actions/download-artifact@v7.0.0
-        with:
-          merge-multiple: true
-
-      - name: 🔍 Check if artifact exist
-        id: check_artifact
-        shell: bash
-        run: |
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-curseforge.zip ]; then
-            echo '::error::No value found for artifact `curseforge.zip`.' && exit 1
-          fi
-          if [ ! -f ${{ needs.info.outputs.project_full_name }}-serverpack.zip ]; then
-            echo '::error::No value found for artifact `serverpack.zip`.' && exit 1
-          fi
-          echo "✔️ All artifacts found"
-
-      - name: 🚀 Upload Curseforge
-        id: release
-        uses: Xikaro/upload-curseforge-modpack-action@1.1.1
-        with:
-          api-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          project-id: ${{ vars.CURSEFORGE_ID }}
-          display-name: ${{ needs.info.outputs.project_full_name }}
-          modpack-path: ${{ needs.info.outputs.project_full_name }}-curseforge.zip
-          server-display-name: ${{ needs.info.outputs.project_full_name }}-serverpack
-          modpack-server-path: ${{ needs.info.outputs.project_full_name }}-serverpack.zip
-          changelog: |
-            ${{ needs.info.outputs.changelog }}
-            ${{ needs.info.outputs.diff }}
-          changelog-format: markdown
-          game-version: ${{ needs.info.outputs.mc_version }}
-          release-type: ${{ needs.info.outputs.release_type }}
-
-  release-modrinth:
-      name: 🚀 Release to Modrinth
-      needs: [info, build-project, release-github]
-      runs-on: ubuntu-latest
-      if: ${{ needs.info.outputs.make_release == 'true' }}
-      outputs:
-        id: ${{ steps.release.outputs.id }}
-
-      steps:
-        - name: 🔒 Check if MODRINTH_API_TOKEN exist
-          shell: bash
-          run: |
-            if [ "${{ secrets.MODRINTH_TOKEN }}" == '' ]; then
-              echo '::error::No value found for secret key `MODRINTH_TOKEN`. See https://docs.github.com/en/  actionssecurity-guides/  encrypted-secrets#creating-encrypted-secrets-for-a-repository' && exit 1
-            fi  
-    
-        - name: 📦 Download artifact
-          uses: actions/download-artifact@v7.0.0
-          with:
-            merge-multiple: true
-
-        - name: 🔍 Check if artifact exist
-          id: check_artifact
-          shell: bash
-          run: |
-            if [ ! -f ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack ]; then
-              echo '::error::No value found for artifact `modrinth.mrpack`.' && exit 1
-            fi
-            echo "✔️ All artifacts found"
-    
-        # - name: 🚀 Upload Modrinth
-        #   id: release
-        #   uses: Xikaro/upload-curseforge-modpack-action@1.1.1
-        #   with:
-        #     api-token: ${{ secrets.MODRINTH_TOKEN }}
-        #     project-id: ${{ vars.MODRINTH_ID }}
-        #     modpack-path: ${{ needs.info.outputs.project_full_name }}-modrinth.mrpack
-        #     changelog: ${{ needs.info.outputs.changelog }}
-        #     changelog-format: markdown
-        #     game-version: ${{ needs.info.outputs.mc_version }}
-        #     display-name: ${{ needs.info.outputs.project_full_name }}
-
-        #     release-type: ${{ needs.info.outputs.release_type }}
-
-  discord-message:
-    name: 📱 Discord Message
-    needs: [info, release-github, release-curseforge]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✂️ Truncate Changelog
-        id: truncated
-        uses: cisox/read-more-action@v1.0.2
-        with:
-          text: '${{ needs.info.outputs.changelog }}'
-          max_chars: '1450'
-
-      - name: 📨 Send Discord message
-        uses: hugoalh/send-discord-webhook-ghaction@v7.0.5
-        with:
-          key: ${{ secrets.DISCORD_RELEASES }}
-          username: "TerraFirmaGreg"
-          avatar_url: "https://raw.githubusercontent.com/TerraFirmaGreg-Team/.github/main/branding/logo.png"
-          content_links_no_embed: .+
-          content: |
-            **Release**: `${{ needs.info.outputs.project_version }}`
-            **Release Type**: `${{ needs.info.outputs.release_type }}`
-            **Game Version**: `${{ needs.info.outputs.mc_version }}`
-
-            [CurseForge](https://www.curseforge.com/minecraft/modpacks/terrafirmagreg-modern/files/${{ needs.release-curseforge.outputs.id }}) • [GitHub](${{ needs.release-github.outputs.url }}) • [Issues](https://github.com/${{ github.repository }}/issues)
-            ```markdown
-            ${{ steps.truncated.outputs.text  }}
-            - ...```
-            ** [Read more...](${{ needs.release-github.outputs.url }}) **
