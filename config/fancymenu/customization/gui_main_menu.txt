@@ -307,7 +307,7 @@ element {
 
 element {
   is_async = false
-  tick_delay = 7500
+  tick_delay = 4000
   tick_mode = normal
   ticker_element_executable_block_identifier = 5c773255-7f21-40d2-ac58-25f989d74227-1766914622061
   [executable_action_instance:b51c15e7-4092-4788-a614-42530e55da11-1766914682099][action_type:set_variable] = srv-status:{"placeholder":"serverstatus","values":{"ip":"{"placeholder":"getvariable","values":{"name":"srv-ip"}}"}}
