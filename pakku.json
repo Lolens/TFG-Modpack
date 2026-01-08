@@ -305,12 +305,6 @@
         },
         "ftb-xmod-compat": {
             "export": true
-        },
-
-
-        "probejs": {
-            "side": "CLIENT",
-            "export": false
         }
     }
 }
