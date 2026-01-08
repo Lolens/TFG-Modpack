@@ -53,7 +53,7 @@
             "side": "CLIENT"
         },
         "chunky": {
-            "side": "CLIENT"
+            "side": "SERVER"
         },
         "better-loading-screen": {
             "side": "CLIENT"
