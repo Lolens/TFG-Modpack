@@ -8281,43 +8281,6 @@
             ]
         },
         {
-            "pakku_id": "oZ0Gttnl2q3cjZJI",
-            "type": "MOD",
-            "slug": {
-                "curseforge": "krypton-reforged"
-            },
-            "name": {
-                "curseforge": "Krypton Reforged"
-            },
-            "id": {
-                "curseforge": "549394"
-            },
-            "files": [
-                {
-                    "type": "curseforge",
-                    "file_name": "KryptonReforged-0.2.3.jar",
-                    "mc_versions": [
-                        "1.20.1",
-                        "1.20"
-                    ],
-                    "loaders": [
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://edge.forgecdn.net/files/4606/534/KryptonReforged-0.2.3.jar",
-                    "id": "4606534",
-                    "parent_id": "549394",
-                    "hashes": {
-                        "sha1": "92690482dad46a8c9cf28e4b6b26e49f4dc67095",
-                        "md5": "5b6b46d86a9a3858c766182a4cb9c3f1"
-                    },
-                    "required_dependencies": [],
-                    "size": 206758,
-                    "date_published": "2023-06-24T02:52:47.757Z"
-                }
-            ]
-        },
-        {
             "pakku_id": "bf2svog06ajj5JHE",
             "pakku_links": [
                 "4PlLE7zCqQsPdMTc"
