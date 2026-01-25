@@ -948,6 +948,12 @@
 			hide_until_deps_visible: true
 			id: "01B6CFB4A317A10F"
 			optional: true
+				rewards: [{
+				count: 8
+				id: "30218A2D456495B7"
+				item: "tfc:wood/chest/oak"
+				type: "item"
+			}]
 			shape: "heart"
 			subtitle: "{quests.stone_age.clay_products.subtitle}"
 			tasks: [
@@ -1378,6 +1384,32 @@
 			guide_page: "tfc:field_guide tfc:mechanics/support_beams"
 			icon: "createdeco:decal_warning"
 			id: "618090A6D0D3B2F1"
+			rewards: [{
+				id: "09802540BAA3DB8F"
+				item: {
+					Count: 1
+					ForgeCaps: {
+						"tfc:item_heat": {
+							heat: 0.0f
+							ticks: 0L
+						}
+					}
+					id: "gtceu:copper_shovel"
+					tag: {
+						Damage: 0
+						DisallowContainerItem: 0b
+						GT.Behaviours: { }
+						GT.Tool: {
+							DefaultEnchantments: [ ]
+							HarvestLevel: 2
+							MaxDamage: 791
+							ToolSpeed: 6.0f
+						}
+						HideFlags: 2
+					}
+				}
+				type: "item"
+			}]
 			shape: "circle"
 			size: 1.0d
 			subtitle: "{quests.stone_age.hazards.subtitle}"
@@ -1787,6 +1819,17 @@
 			id: "0D1E3CAF5D4B6B7B"
 			invisible: true
 			optional: true
+			rewards: [{
+				id: "52A7DAA5E3D0474D"
+				item: {
+					Count: 1
+					id: "tfclunchbox:cooling_lunchbox"
+					tag: {
+						SelectedSlot: 0
+					}
+				}
+				type: "item"
+			}]
 			shape: "heart"
 			subtitle: "{quests.stone_age.garlic_bread.subtitle}"
 			tasks: [{
