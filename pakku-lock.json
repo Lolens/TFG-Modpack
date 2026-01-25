@@ -2438,7 +2438,7 @@
         {
             "pakku_id": "souzHQQB9HhNTn5r",
             "type": "MOD",
-            "side": "BOTH",
+            "side": "SERVER",
             "slug": {
                 "curseforge": "chunky-pregenerator-forge",
                 "modrinth": "chunky"
@@ -2681,7 +2681,7 @@
         {
             "pakku_id": "fYzrRo2M24y3MX3e",
             "type": "MOD",
-            "side": "BOTH",
+            "side": "CLIENT",
             "slug": {
                 "curseforge": "coastal-waves",
                 "modrinth": "coastal-waves"
@@ -3307,78 +3307,6 @@
                     "required_dependencies": [],
                     "size": 88752,
                     "date_published": "2023-06-21T05:37:55.983Z"
-                }
-            ]
-        },
-        {
-            "pakku_id": "FWUslNlfrCLR1dXa",
-            "pakku_links": [
-                "Osj3mktzthdVRa2j"
-            ],
-            "type": "MOD",
-            "side": "CLIENT",
-            "slug": {
-                "curseforge": "craftpresence",
-                "modrinth": "craftpresence"
-            },
-            "name": {
-                "curseforge": "CraftPresence",
-                "modrinth": "CraftPresence"
-            },
-            "id": {
-                "curseforge": "297038",
-                "modrinth": "DFqQfIBR"
-            },
-            "files": [
-                {
-                    "type": "modrinth",
-                    "file_name": "CraftPresence-2.7.0+1.20.1-forge.jar",
-                    "mc_versions": [
-                        "1.20",
-                        "1.20.1"
-                    ],
-                    "loaders": [
-                        "forge",
-                        "neoforge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://cdn.modrinth.com/data/DFqQfIBR/versions/ft5Er26S/CraftPresence-2.7.0+1.20.1-forge.jar",
-                    "id": "ft5Er26S",
-                    "parent_id": "DFqQfIBR",
-                    "hashes": {
-                        "sha512": "161aaede2fe5865c8f97c9a1baa02dd73f1804add2748e6265a45795fddfdd7b72e79170db5d71b2f921fe8c4c1a7bcaecd1d7dac908f135a260b7159f0bb401",
-                        "sha1": "e37dbe8efb670d3a9e079e095d59410658c7e3e9"
-                    },
-                    "required_dependencies": [
-                        "nT86WUER"
-                    ],
-                    "size": 2059525,
-                    "date_published": "2025-10-25T01:10:57.224854Z"
-                },
-                {
-                    "type": "curseforge",
-                    "file_name": "CraftPresence-2.7.0+1.20.1-forge.jar",
-                    "mc_versions": [
-                        "1.20.1",
-                        "1.20"
-                    ],
-                    "loaders": [
-                        "neoforge",
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://edge.forgecdn.net/files/7146/452/CraftPresence-2.7.0+1.20.1-forge.jar",
-                    "id": "7146452",
-                    "parent_id": "297038",
-                    "hashes": {
-                        "sha1": "e37dbe8efb670d3a9e079e095d59410658c7e3e9",
-                        "md5": "749ea480cb10ae2b56e90dae94ff1d04"
-                    },
-                    "required_dependencies": [
-                        "1056812"
-                    ],
-                    "size": 2059525,
-                    "date_published": "2025-10-25T01:10:38.497Z"
                 }
             ]
         },
@@ -5682,7 +5610,7 @@
                 "e7thBe1Z6fvyxUtU"
             ],
             "type": "MOD",
-            "side": "CLIENT",
+            "side": "SERVER",
             "slug": {
                 "curseforge": "ftb-backups-2"
             },
@@ -8385,43 +8313,6 @@
             ]
         },
         {
-            "pakku_id": "oZ0Gttnl2q3cjZJI",
-            "type": "MOD",
-            "slug": {
-                "curseforge": "krypton-reforged"
-            },
-            "name": {
-                "curseforge": "Krypton Reforged"
-            },
-            "id": {
-                "curseforge": "549394"
-            },
-            "files": [
-                {
-                    "type": "curseforge",
-                    "file_name": "KryptonReforged-0.2.3.jar",
-                    "mc_versions": [
-                        "1.20.1",
-                        "1.20"
-                    ],
-                    "loaders": [
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://edge.forgecdn.net/files/4606/534/KryptonReforged-0.2.3.jar",
-                    "id": "4606534",
-                    "parent_id": "549394",
-                    "hashes": {
-                        "sha1": "92690482dad46a8c9cf28e4b6b26e49f4dc67095",
-                        "md5": "5b6b46d86a9a3858c766182a4cb9c3f1"
-                    },
-                    "required_dependencies": [],
-                    "size": 206758,
-                    "date_published": "2023-06-24T02:52:47.757Z"
-                }
-            ]
-        },
-        {
             "pakku_id": "bf2svog06ajj5JHE",
             "pakku_links": [
                 "4PlLE7zCqQsPdMTc"
@@ -10730,7 +10621,7 @@
                 "3Hn4sTVbBvKyQJJS"
             ],
             "type": "MOD",
-            "side": "BOTH",
+            "side": "CLIENT",
             "slug": {
                 "curseforge": "pick-up-notifier",
                 "modrinth": "pick-up-notifier"
@@ -11616,69 +11507,6 @@
                     "required_dependencies": [],
                     "size": 77732,
                     "date_published": "2024-04-23T06:56:56.381361Z"
-                }
-            ]
-        },
-        {
-            "pakku_id": "z0O35G9R0QKhBCb9",
-            "type": "MOD",
-            "side": "CLIENT",
-            "slug": {
-                "curseforge": "shoulder-surfing-reloaded",
-                "modrinth": "shoulder-surfing-reloaded"
-            },
-            "name": {
-                "curseforge": "Shoulder Surfing Reloaded",
-                "modrinth": "Shoulder Surfing Reloaded"
-            },
-            "id": {
-                "curseforge": "243190",
-                "modrinth": "kepjj2sy"
-            },
-            "files": [
-                {
-                    "type": "modrinth",
-                    "file_name": "ShoulderSurfing-Forge-1.20.1-4.18.2.jar",
-                    "mc_versions": [
-                        "1.20",
-                        "1.20.1"
-                    ],
-                    "loaders": [
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://cdn.modrinth.com/data/kepjj2sy/versions/ALTXWFUW/ShoulderSurfing-Forge-1.20.1-4.18.2.jar",
-                    "id": "ALTXWFUW",
-                    "parent_id": "kepjj2sy",
-                    "hashes": {
-                        "sha512": "e7da5a1532c9be6caff9f308e665ee2a4d0cd5b7969ec735ffead9d1efd5f85f19221b296f6a9f34283bb5945fff8fde33495f0429e10ff6afdb1a305bdee034",
-                        "sha1": "2385592f8a4101edd6627ce2a75811368e5d6abd"
-                    },
-                    "required_dependencies": [],
-                    "size": 264836,
-                    "date_published": "2026-01-11T15:50:27.470620Z"
-                },
-                {
-                    "type": "curseforge",
-                    "file_name": "ShoulderSurfing-Forge-1.20.1-4.18.2.jar",
-                    "mc_versions": [
-                        "1.20.1",
-                        "1.20"
-                    ],
-                    "loaders": [
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://edge.forgecdn.net/files/7446/740/ShoulderSurfing-Forge-1.20.1-4.18.2.jar",
-                    "id": "7446740",
-                    "parent_id": "243190",
-                    "hashes": {
-                        "sha1": "2385592f8a4101edd6627ce2a75811368e5d6abd",
-                        "md5": "4a94ae2bddb6efc105e09d1fc18dbb52"
-                    },
-                    "required_dependencies": [],
-                    "size": 264836,
-                    "date_published": "2026-01-11T15:50:30.713Z"
                 }
             ]
         },
@@ -13768,6 +13596,76 @@
             ]
         },
         {
+            "pakku_id": "qCVd1ucK3X4xk861",
+            "pakku_links": [
+                "64uacGcEw697jVGs"
+            ],
+            "type": "MOD",
+            "side": "CLIENT",
+            "slug": {
+                "curseforge": "tfcgenviewer",
+                "modrinth": "tfcgenviewer"
+            },
+            "name": {
+                "curseforge": "TFCGenViewer",
+                "modrinth": "TFCGenViewer"
+            },
+            "id": {
+                "curseforge": "1062270",
+                "modrinth": "yp9Ot3YC"
+            },
+            "files": [
+                {
+                    "type": "modrinth",
+                    "file_name": "tfcgenviewer-1.20.1-1.5.1.jar",
+                    "mc_versions": [
+                        "1.20.1"
+                    ],
+                    "loaders": [
+                        "forge",
+                        "neoforge"
+                    ],
+                    "release_type": "release",
+                    "url": "https://cdn.modrinth.com/data/yp9Ot3YC/versions/2hMb8aJ5/tfcgenviewer-1.20.1-1.5.1.jar",
+                    "id": "2hMb8aJ5",
+                    "parent_id": "yp9Ot3YC",
+                    "hashes": {
+                        "sha512": "e38f04f1f7faca5633489b35224dfd7363e677e35794516dfa44d7d608508443aba59604fcfbb0d1abbf87a9c096639754df7d6f923a9ae135320e4c54d235f9",
+                        "sha1": "208e780e3f9fc4cbee1de4222d72408162b44a63"
+                    },
+                    "required_dependencies": [
+                        "JaCEZUhg"
+                    ],
+                    "size": 392578,
+                    "date_published": "2025-10-04T23:28:33.780282Z"
+                },
+                {
+                    "type": "curseforge",
+                    "file_name": "tfcgenviewer-1.20.1-1.5.1.jar",
+                    "mc_versions": [
+                        "1.20.1"
+                    ],
+                    "loaders": [
+                        "neoforge",
+                        "forge"
+                    ],
+                    "release_type": "release",
+                    "url": "https://edge.forgecdn.net/files/7067/517/tfcgenviewer-1.20.1-1.5.1.jar",
+                    "id": "7067517",
+                    "parent_id": "1062270",
+                    "hashes": {
+                        "sha1": "208e780e3f9fc4cbee1de4222d72408162b44a63",
+                        "md5": "d7c1818aece9738176adbc464075b10e"
+                    },
+                    "required_dependencies": [
+                        "302973"
+                    ],
+                    "size": 392578,
+                    "date_published": "2025-10-04T23:28:39.597Z"
+                }
+            ]
+        },
+        {
             "pakku_id": "wHVaxSX4iL72uvnQ",
             "pakku_links": [
                 "SqFAAFJATMkBXiCt",
@@ -14193,44 +14091,6 @@
                     ],
                     "size": 177967,
                     "date_published": "2025-01-28T09:39:35.493Z"
-                }
-            ]
-        },
-        {
-            "pakku_id": "UUgCxePdwRd5MyWw",
-            "type": "MOD",
-            "side": "CLIENT",
-            "slug": {
-                "curseforge": "third-person-shooting"
-            },
-            "name": {
-                "curseforge": "Third Person Shooting: Zero"
-            },
-            "id": {
-                "curseforge": "969378"
-            },
-            "files": [
-                {
-                    "type": "curseforge",
-                    "file_name": "tp_shooting-1.20.1-5.1.1+tacz1.1.6-all.jar",
-                    "mc_versions": [
-                        "1.20.1"
-                    ],
-                    "loaders": [
-                        "neoforge",
-                        "forge"
-                    ],
-                    "release_type": "release",
-                    "url": "https://edge.forgecdn.net/files/7034/860/tp_shooting-1.20.1-5.1.1+tacz1.1.6-all.jar",
-                    "id": "7034860",
-                    "parent_id": "969378",
-                    "hashes": {
-                        "sha1": "43c627e23f7e72ee011085a94bdc1ba57b86a7ba",
-                        "md5": "8449f5e5f21eb75d2e4393c86d5b7a8e"
-                    },
-                    "required_dependencies": [],
-                    "size": 179476,
-                    "date_published": "2025-09-26T11:19:44.383Z"
                 }
             ]
         },
@@ -15368,6 +15228,69 @@
                     "required_dependencies": [],
                     "size": 22335232,
                     "date_published": "2024-12-04T22:45:46.092248Z"
+                }
+            ]
+        },
+        {
+            "pakku_id": "yA2Onxz50nlLjc4X",
+            "type": "MOD",
+            "side": "CLIENT",
+            "slug": {
+                "curseforge": "spark",
+                "modrinth": "spark"
+            },
+            "name": {
+                "curseforge": "spark",
+                "modrinth": "spark"
+            },
+            "id": {
+                "curseforge": "361579",
+                "modrinth": "l6YH9Als"
+            },
+            "files": [
+                {
+                    "type": "curseforge",
+                    "file_name": "spark-1.10.53-forge.jar",
+                    "mc_versions": [
+                        "1.20.1",
+                        "1.20"
+                    ],
+                    "loaders": [
+                        "forge"
+                    ],
+                    "release_type": "release",
+                    "url": "https://edge.forgecdn.net/files/4738/952/spark-1.10.53-forge.jar",
+                    "id": "4738952",
+                    "parent_id": "361579",
+                    "hashes": {
+                        "sha1": "231fb325368c0660954f47bfb03493f5246fa4d1",
+                        "md5": "95dcd3b5400cc5eb5d0478a744e6ef98"
+                    },
+                    "required_dependencies": [],
+                    "size": 3114590,
+                    "date_published": "2023-09-05T08:02:20.050Z"
+                },
+                {
+                    "type": "modrinth",
+                    "file_name": "spark-1.10.53-forge.jar",
+                    "mc_versions": [
+                        "1.20",
+                        "1.20.1"
+                    ],
+                    "loaders": [
+                        "forge"
+                    ],
+                    "release_type": "release",
+                    "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/4FXHDE9F/spark-1.10.53-forge.jar",
+                    "id": "4FXHDE9F",
+                    "parent_id": "l6YH9Als",
+                    "hashes": {
+                        "sha512": "15c6a3753dcba380624643a1e19c856240e8f6bed280f908e1be12c6154a86284ac86405c806273842975e0b7270af93ea9b1db5cf575a3853e54e1088cf7343",
+                        "sha1": "231fb325368c0660954f47bfb03493f5246fa4d1"
+                    },
+                    "required_dependencies": [],
+                    "size": 3114590,
+                    "date_published": "2023-09-05T08:02:29.569207Z"
                 }
             ]
         }

@@ -948,6 +948,12 @@
 			hide_until_deps_visible: true
 			id: "01B6CFB4A317A10F"
 			optional: true
+				rewards: [{
+				count: 8
+				id: "30218A2D456495B7"
+				item: "tfc:wood/chest/oak"
+				type: "item"
+			}]
 			shape: "heart"
 			subtitle: "{quests.stone_age.clay_products.subtitle}"
 			tasks: [
@@ -1787,6 +1793,17 @@
 			id: "0D1E3CAF5D4B6B7B"
 			invisible: true
 			optional: true
+			rewards: [{
+				id: "52A7DAA5E3D0474D"
+				item: {
+					Count: 1
+					id: "tfclunchbox:cooling_lunchbox"
+					tag: {
+						SelectedSlot: 0
+					}
+				}
+				type: "item"
+			}]
 			shape: "heart"
 			subtitle: "{quests.stone_age.garlic_bread.subtitle}"
 			tasks: [{

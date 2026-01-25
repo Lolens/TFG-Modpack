@@ -1,2 +1,26 @@
 type = user_variables
 
+variable {
+  name = srv-status
+  value = §aOnline
+  reset_on_launch = true
+}
+
+variable {
+  name = srv-ping
+  value = 63
+  reset_on_launch = true
+}
+
+variable {
+  name = srv-playercount
+  value = 0/64
+  reset_on_launch = true
+}
+
+variable {
+  name = srv-ip
+  value = 199.83.103.208
+  reset_on_launch = false
+}
+
