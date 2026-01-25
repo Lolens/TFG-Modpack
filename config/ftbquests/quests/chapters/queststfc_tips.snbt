@@ -417,6 +417,11 @@
 			description: ["{quests.tfg_tips.cellar.desc}"]
 			guide_page: "tfc:field_guide tfc:firmalife/cellar"
 			id: "3D1FF501DE2E56FE"
+			rewards: [{
+				id: "2463CF43A1ABCDE3"
+				item: "firmalife:climate_station"
+				type: "item"
+			}]
 			size: 1.5d
 			subtitle: "{quests.tfg_tips.cellar.subtitle}"
 			tasks: [

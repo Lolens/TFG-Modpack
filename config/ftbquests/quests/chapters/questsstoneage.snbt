@@ -1384,32 +1384,6 @@
 			guide_page: "tfc:field_guide tfc:mechanics/support_beams"
 			icon: "createdeco:decal_warning"
 			id: "618090A6D0D3B2F1"
-			rewards: [{
-				id: "09802540BAA3DB8F"
-				item: {
-					Count: 1
-					ForgeCaps: {
-						"tfc:item_heat": {
-							heat: 0.0f
-							ticks: 0L
-						}
-					}
-					id: "gtceu:copper_shovel"
-					tag: {
-						Damage: 0
-						DisallowContainerItem: 0b
-						GT.Behaviours: { }
-						GT.Tool: {
-							DefaultEnchantments: [ ]
-							HarvestLevel: 2
-							MaxDamage: 791
-							ToolSpeed: 6.0f
-						}
-						HideFlags: 2
-					}
-				}
-				type: "item"
-			}]
 			shape: "circle"
 			size: 1.0d
 			subtitle: "{quests.stone_age.hazards.subtitle}"
