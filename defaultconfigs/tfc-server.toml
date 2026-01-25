@@ -514,7 +514,7 @@ familiarityDecayLimit = 0.3
 	[blocks.mud]
 		#
 		# If TFC dirt blocks are able to be created into mud blocks using a water-filled fluid container.
-		enableDirtToMudCreation = true
+		enableDirtToMudCreation = false
 
 	[blocks.quern]
 		#
@@ -726,7 +726,7 @@ familiarityDecayLimit = 0.3
 		#
 		# How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.
 		#Range: 0.0 ~ 100.0
-		thirstGainedFromDrinkingInTheRain = 0.20833333333333334
+		thirstGainedFromDrinkingInTheRain = 0.03
 		#
 		# A multiplier for how quickly the player regenerates health, under TFC's passive regeneration.
 		# By default, the player regenerates 0.2 HP/second, or 0.6 HP/second when above 80% hunger and thirst, where 1 HP = 1/50 of a heart.
@@ -750,7 +750,7 @@ familiarityDecayLimit = 0.3
 		# Setting this to zero will cause decay not to apply.
 		# Note that if you set this to zero **food items will lose their creation dates!!**. This is not reversible!
 		#Range: 0.0 ~ 1000.0
-		foodDecayModifier = 1.0
+		foodDecayModifier = 0.45
 		#
 		# Enables negative effects from carrying too many very heavy items, including potion effects.
 		enableOverburdening = true
