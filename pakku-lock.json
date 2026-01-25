@@ -2681,7 +2681,7 @@
         {
             "pakku_id": "fYzrRo2M24y3MX3e",
             "type": "MOD",
-            "side": "BOTH",
+            "side": "CLIENT",
             "slug": {
                 "curseforge": "coastal-waves",
                 "modrinth": "coastal-waves"
