@@ -401,7 +401,6 @@
 				"{@pagebreak}"
 				"{quests.low_voltage.lv_chemical_bath.desc.2}"
 			]
-			hide_dependency_lines: true
 			id: "330BDB559A7BAB35"
 			size: 1.0d
 			subtitle: "{quests.low_voltage.lv_chemical_bath.subtitle}"
@@ -411,8 +410,8 @@
 				type: "item"
 			}]
 			title: "{quests.low_voltage.lv_chemical_bath.title}"
-			x: -4.0d
-			y: 13.5d
+			x: 4.0d
+			y: 9.5d
 		}
 		{
 			dependencies: ["64E1E87B8AF72968"]
@@ -1026,7 +1025,6 @@
 		{
 			dependencies: [
 				"0EAC071414AEC07E"
-				"330BDB559A7BAB35"
 				"63CD0236B337EAAD"
 			]
 			description: [
