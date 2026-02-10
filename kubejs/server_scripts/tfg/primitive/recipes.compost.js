@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * 
+ * @param {Internal.RecipesEventJS} event 
+ */
 function registerTFGCompostRecipes(event) {
 	//#region Fertiliser
 	event.recipes.gtceu.mixer('tfg:fertilizer')
@@ -22,21 +26,33 @@ function registerTFGCompostRecipes(event) {
 		.EUt(30)
 
 	event.recipes.gtceu.centrifuge('tfg:gtceu/centrifuge/pure_fertilizers')
-		.itemInputs('1x gtceu:fertilizer')
+		.itemInputs('8x gtceu:fertilizer')
 		.itemOutputs('1x tfc:pure_nitrogen', '1x tfc:pure_potassium', '1x tfc:pure_phosphorus')
 		.duration(340)
 		.EUt(GTValues.VA[GTValues.ULV])
 
 	event.recipes.gtceu.mixer('tfg:tfc/mixer/fertilizer')
 		.itemInputs('1x tfc:pure_nitrogen', '1x tfc:pure_potassium', '1x tfc:pure_phosphorus', ChemicalHelper.get(TagPrefix.dustSmall, GTMaterials.Clay, 1))
-		.itemOutputs('1x gtceu:fertilizer')
+		.itemOutputs('8x gtceu:fertilizer')
 		.duration(160)
 		.EUt(GTValues.VA[GTValues.ULV])
 
-	event.recipes.gtceu.gas_pressurizer('tfg:pure_nitrogen')
+	event.recipes.gtceu.mixer('tfg:pure_nitrogen')
 		.itemInputs('#forge:wax')
-		.inputFluids(Fluid.of('gtceu:nitrogen', 1000))
-		.itemOutputs('16x tfc:pure_nitrogen')
+		.inputFluids(Fluid.of('gtceu:nitrogen', 8000))
+		.itemOutputs('4x tfc:pure_nitrogen')
+		.duration(100)
+		.EUt(GTValues.VA[GTValues.LV])
+
+	event.recipes.gtceu.mixer('tfg:pure_potassium')
+		.itemInputs('#forge:wax', '8x gtceu:potassium_dust')
+		.itemOutputs('4x tfc:pure_potassium')
+		.duration(100)
+		.EUt(GTValues.VA[GTValues.LV])
+	
+	event.recipes.gtceu.mixer('tfg:pure_phosphorus')
+		.itemInputs('#forge:wax', '8x gtceu:phosphorus_dust')
+		.itemOutputs('4x tfc:pure_phosphorus')
 		.duration(100)
 		.EUt(GTValues.VA[GTValues.LV])
 	//#endregion
@@ -53,6 +69,11 @@ function registerTFGCompostRecipes(event) {
 		.itemOutputs('tfc:groundcover/humus')
 		.duration(600)
 		.EUt(2)
+
+	event.smelting(
+		'1x tfc:groundcover/dead_grass',
+		'tfc:thatch'
+	).id('tfg:smelting/thatch_drying_furnace')
 
 	event.recipes.gtceu.fermenter('tfg:fertilizer_to_compost')
 		.itemInputs('4x gtceu:fertilizer')
@@ -191,4 +212,26 @@ function registerTFGCompostRecipes(event) {
 		.itemOutputs(Item.of('tfg:universal_compost_browns', 4))
 		.duration(20)
 		.EUt(8)
+
+	//Universal Brown Compost Bag
+	event.shapeless(Item.of('tfg:universal_compost_browns_bag', 1),
+	[
+		"4x tfg:universal_compost_browns"
+	]).id('tfg:shapeless/universal_compost_browns_bag')
+
+	event.shapeless(Item.of('tfg:universal_compost_browns', 4),
+	[
+		"tfg:universal_compost_browns_bag"	
+	]).id("tfg:shapeless/universal_compost_browns_from_bag")
+
+	//Universal Green Compost Bag
+	event.shapeless(Item.of('tfg:universal_compost_greens_bag', 1),
+	[
+		"4x tfg:universal_compost_greens"
+	]).id('tfg:shapeless/universal_compost_greens_bag')
+
+	event.shapeless(Item.of('tfg:universal_compost_greens', 4),
+	[
+		"tfg:universal_compost_greens_bag"	
+	]).id("tfg:shapeless/universal_compost_greens_from_bag")
 }
