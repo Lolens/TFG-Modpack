@@ -58,7 +58,10 @@ const registerCreateRecipes = (event) => {
 	
 	// Remove Table Cloth recipes
 	global.MINECRAFT_DYE_NAMES.forEach(dye => {
-		event.remove([{ id: `create:crafting/logistics/${dye}_table_cloth` }, { id: `create:crafting/logistics/${dye}_table_cloth_from_other_table_cloth` }])
+		event.remove([
+			{ id: `create:crafting/logistics/${dye}_table_cloth` },
+			{ id: `create:crafting/logistics/${dye}_table_cloth_from_other_table_cloth` }
+		])
 	})
 
 	event.remove({ type: 'minecraft:stonecutting', input: 'create:andesite_alloy' })
@@ -204,6 +207,14 @@ const registerCreateRecipes = (event) => {
 		A: '#forge:bolts/wrought_iron',
 		B: '#forge:plates/wrought_iron'
 	}).addMaterialInfo().id('tfg:create/shaped/metal_bracket')
+
+	event.recipes.gtceu.shaped('4x create:wooden_bracket', [
+		'AAA',
+		'BBB'
+	], {
+		A: '#forge:bolts/wrought_iron',
+		B: '#tfc:lumber'
+	}).addMaterialInfo().id('tfg:create/shaped/wooden_bracket')
 
 	// Жидкостная труба
 	event.shaped('create:fluid_pipe', [
@@ -1412,17 +1423,21 @@ const registerCreateRecipes = (event) => {
 			event.remove({ id: `create:create.toolbox.color.block.create.${dye}_toolbox` })
 
 			event.recipes.tfc.barrel_sealed(1000)
-				.inputs('create:brown_toolbox', Fluid.of(`tfc:${dye}_dye`, 288))
-				.outputItem(`create:${dye}_toolbox`)
+				.inputs('#create:toolboxes', Fluid.of(`tfc:${dye}_dye`, 288))
+				.outputItem(TFC.isp.of(`create:${dye}_toolbox`).simpleModifier('tfg:copy_nbt').asCanonClass())
 				.id(`barrel/create/${dye}_toolbox`)
 
-			event.recipes.gtceu.chemical_bath(`create/${dye}_toolbox`)
-				.itemInputs('create:brown_toolbox')
+			event.recipes.gtceu.food_processor(`create/${dye}_toolbox`)
+				.itemInputs('#create:toolboxes')
 				.inputFluids(Fluid.of(`tfc:${dye}_dye`, 288))
 				.itemOutputs(`create:${dye}_toolbox`)
 				.duration(200)
 				.EUt(4)
-				.category(GTRecipeCategories.CHEM_DYES)
+
+			$ISPRecipeLogic.RegisterRecipeData(`food_processor/create/${dye}_toolbox`,
+				[Ingredient.of('#create:toolboxes')],
+				TFC.isp.of(`create:${dye}_toolbox`).simpleModifier('tfg:copy_nbt').asCanonClass(),
+				[])
 		}
 	})
 
