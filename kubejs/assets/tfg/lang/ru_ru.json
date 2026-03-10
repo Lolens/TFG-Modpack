@@ -5122,9 +5122,19 @@
   "quests.custom.time_rewards.days_5.description": "Не стоит забывать о красоте. Порой неприятно заниматься делами на неухоженной базе",
   "quests.custom.time_rewards.days_5.task0": "5 дней",
   "quests.custom.time_rewards.days_6.title": "6 дней",
-  "quests.custom.time_rewards.days_6.description": "TODO",
+  "quests.custom.time_rewards.days_6.description": "При путешествиях в бездну и глубины шахт стоит запастись расходниками и хорошими инструментами",
   "quests.custom.time_rewards.days_6.task0": "6 дней",
   "quests.custom.time_rewards.days_7.title": "7 дней",
-  "quests.custom.time_rewards.days_7.description": "TODO",
-  "quests.custom.time_rewards.days_7.task0": "Целая неделя в сети!"
+  "quests.custom.time_rewards.days_7.description": "Хоть поначалу рецепты электрических механизмов могут и быть сложными, но не стоит пренебрегать количеством здоровья и хорошей едой",
+  "quests.custom.time_rewards.days_7.task0": "Целая неделя в сети!",
+
+  "quests.custom.additional.prospector.title": "Ранний сканер!",
+  "quests.custom.additional.prospector.description": "Этот квест позволит сдать ресурсы и получить взамен сканер, позволяющий более просто находить залежи руд и видеть их размеры",
+  "quests.custom.additional.prospector.subtitle": "Если ну очень сложно",
+
+  "quests.custom.additional.prospector_charge.title": "Зарядка сканера",
+  "quests.custom.additional.prospector_charge.description": "Здесь можно зарядить сканер сдав сканер и немного редстоуновой пыли",
+  "quests.custom.additional.prospector_charge.task0": "Любой LV сканер"
+
+
 }
