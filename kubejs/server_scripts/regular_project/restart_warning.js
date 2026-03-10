@@ -12,12 +12,8 @@ let sentWarnings = new Set();
 let restartSettings = {
   warnings: [
     { time: 30, message: "§eПерезагрузка через 30 минут", important: false },
-    { time: 15, message: "§6Перезагрузка через 15 минут", important: false },
     { time: 10, message: "§6Перезагрузка через 10 минут", important: false },
     { time: 5, message: "§c§lПерезагрузка через 5 минут!", important: true },
-    { time: 4, message: "§c§lПерезагрузка через 4 минуты!", important: true },
-    { time: 3, message: "§c§lПерезагрузка через 3 минуты!", important: true },
-    { time: 2, message: "§c§lПерезагрузка через 2 минуты!", important: true },
     { time: 1, message: "§4§lПерезагрузка через 1 минуту!", important: true },
   ],
 };
