@@ -22,8 +22,8 @@
 ["Stress Settings"]
 	#Stress impact of the Hyper Entrance block.
 	#Range: 0.0 ~ 100.0
-	entranceStressImpact = 4.0
+	entranceStressImpact = 2.0
 	#Stress impact of the Hyper Accelerator block.
 	#Range: 0.0 ~ 100.0
-	acceleratorStressImpact = 4.0
+	acceleratorStressImpact = 2.0
 
