@@ -706,9 +706,6 @@ function removeGTCEURecipes(event) {
 	event.remove({ id: 'gtceu:assembler/bell' })
 	event.remove({ id: 'gtceu:assembler/armor_stand' })
 	event.remove({ id: 'gtceu:assembler/piston_stainless_steel' })
-	event.remove({ id: 'gtceu:assembler/treated_trapdoor_iron' })
-	event.remove({ id: 'gtceu:assembler/treated_trapdoor_steel' })
-	event.remove({ id: 'gtceu:assembler/treated_door' })
 	event.remove({ id: 'gtceu:assembler/barrel' })
 	event.remove({ id: 'gtceu:assembler/book_from_leather' })
 	event.remove({ id: 'gtceu:assembler/name_tag' })
@@ -768,6 +765,7 @@ function removeGTCEURecipes(event) {
 	event.remove({ id: 'gtceu:wiremill/string_from_polycaprolactam' })
 
 	event.remove({ id: 'gtceu:electrolyzer/decomposition_electrolyzing_granite_red' })
+	event.remove({ id: 'gtceu:electrolyzer/decomposition_electrolyzing_echo_shard' })
 
 	event.remove({ id: 'gtceu:chemical_bath/black_steel_cool_down' })
 	event.remove({ id: 'gtceu:chemical_bath/black_steel_cool_down_distilled_water' })
@@ -874,11 +872,9 @@ function removeGTCEURecipes(event) {
 
 	// Remove Default Pressure Plate Recipes
 	const MC_PRESSURE_PLATES = [
-		'bamboo',
 		'polished_blackstone',
 		'light_weighted',
 		'heavy_weighted',
-		'treated'
 	]
 	MC_PRESSURE_PLATES.forEach(material => {	
 		event.remove({ id: `gtceu:shaped/${material}_pressure_plate` })

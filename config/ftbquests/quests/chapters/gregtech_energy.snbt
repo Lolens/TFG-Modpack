@@ -815,8 +815,8 @@
 			dependencies: [
 				"109C57B63EE95E35"
 				"5826EC76931359B8"
-				"00A2566109144D7F"
 				"4D0ADC66D2CF09B1"
+				"670FC89E34D70E3C"
 			]
 			dependency_requirement: "one_completed"
 			description: [
@@ -1159,6 +1159,7 @@
 				"{quests.gregtech_energy.large_solar_t2.desc.2}"
 			]
 			id: "3AEAB1930F4CC034"
+			optional: true
 			subtitle: "{quests.gregtech_energy.large_solar_t2.subtitle}"
 			tasks: [{
 				id: "149BF93064D121D3"
@@ -1175,6 +1176,7 @@
 			]
 			description: ["{quests.gregtech_energy.large_solar_t3.desc}"]
 			id: "7CA3A5EFE3D5B688"
+			optional: true
 			subtitle: "{quests.gregtech_energy.large_solar_t3.subtitle}"
 			tasks: [{
 				id: "612817A7FA759E03"

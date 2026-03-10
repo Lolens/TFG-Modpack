@@ -13,7 +13,7 @@ function registerTFGNuclearRecipes(event) {
 		.addMaterialInfo(true)
 
 	event.recipes.gtceu.assembler('tfg:material_holder')
-		.itemInputs('gtceu:ev_input_bus', '4x gtceu:uranium_triplatinum_single_wire', '2x gtceu:ev_conveyor_module', '#gtceu:circuits/ev')
+		.itemInputs('gtceu:ev_input_bus', '4x gtceu:aluminium_single_cable', '2x gtceu:ev_conveyor_module', '#gtceu:circuits/ev')
 		.itemOutputs('deafission:material_holder')
 		.duration(20*30)
 		.circuit(1)
@@ -349,7 +349,7 @@ function registerTFGNuclearRecipes(event) {
 		.dimension('ad_astra:mars')
 
 	// TBU Fission
-    event.recipes.deafission.fission_reactor_fuel('kubejs:fuelcell_custom_x1')
+    event.recipes.deafission.fission_reactor_fuel('tfg:tbu_232')
         .itemInputs('tfg:tbu_232_rod')
         .itemOutputs('tfg:depleted_tbu_232_rod')
         // Mandatory by GT; no real impact. Use this as a convention:
@@ -367,7 +367,7 @@ function registerTFGNuclearRecipes(event) {
 
     event.recipes.deafission.fission_reactor_coolant('tfg:tbu_coolant')
         .itemInputs(Ingredient.of([
-            'tfg:tbu_232_rod']))
+            'tfg:tbu_232_rod'/*, 'tfg:neptunium_237_rod', 'tfg:americium_241_rod', 'tfg:californium_252_rod'*/]))
 		.perTick(true)
 		.inputFluids(Fluid.of('tfg:heavy_water', 20))
 		.outputFluids(Fluid.of('gtceu:dense_steam', 1200))
@@ -806,7 +806,7 @@ function registerTFGNuclearRecipes(event) {
 		'CDC',
 		'EBE'
 	], {
-		A: 'gtceu:ostrum_normal_fluid_pipe',
+		A: 'gtceu:tungsten_steel_normal_fluid_pipe',
 		B: 'gtceu:platinum_single_cable',
 		C: '#gtceu:circuits/iv',
 		D: 'gtceu:iv_machine_hull',
@@ -1404,5 +1404,21 @@ function registerTFGNuclearRecipes(event) {
 		.circuit(2)
 		.duration(20*14)
 		.EUt(GTValues.VA[GTValues.EV])
+
+	//#region TiCl4 Small Reactor Coolant
+
+	event.recipes.gtceu.gas_pressurizer('tfg:super_critical_co2')
+		.inputFluids(Fluid.of('gtceu:carbon_dioxide', 1000))
+		.outputFluids(Fluid.of('tfg:supercritical_co2', 10))
+		.circuit(1)
+		.duration(20*58)
+		.EUt(GTValues.VA[GTValues.HV])
+
+	event.recipes.gtceu.chemical_reactor('tfg:ticl_doped')
+		.inputFluids(Fluid.of('gtceu:titanium_tetrachloride', 1000), Fluid.of('tfg:supercritical_co2', 1000))
+		.outputFluids(Fluid.of('tfg:ticl4_doped_supercritical_co2', 1000))
+		.circuit(1)
+		.duration(20*4)
+		.EUt(GTValues.VA[GTValues.IV])
 
 }
