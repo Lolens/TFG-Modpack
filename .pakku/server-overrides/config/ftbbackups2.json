@@ -10,24 +10,24 @@
 	/* Backup retention mode. Valid Modes: MAX_BACKUPS, TIERED
 	   Note: TIERED mode is an experimental feature, Use at your own risk.
 	*/
-	"retention_mode": "MAX_BACKUPS",
+	"retention_mode": "TIERED",
 	// Applies to retention_mode:MAX_BACKUPS, Sets the maximum number of backups to keep
 	"max_backups": 3,
 	// Applies to retention_mode:TIERED, The latest x number of backups will be retained
-	"keep_latest": 3,
+	"keep_latest": 5,
 	// Applies to retention_mode:TIERED, Sets number of hourly backups to keep
 	"keep_hourly": 1,
 	// Applies to retention_mode:TIERED, Sets number of daily backups to keep
-	"keep_daily": 1,
+	"keep_daily": 3,
 	// Applies to retention_mode:TIERED, Sets number of weekly backups to keep
 	"keep_weekly": 1,
 	// Applies to retention_mode:TIERED, Sets number of monthly backups to keep
-	"keep_monthly": 1,
+	"keep_monthly": 0,
 	/* This is done with an implementation of cron from the Quartz java library.
 	   More info here
 	   (http://www.cronmaker.com)
 	*/
-	"backup_cron": "0 15 10 * * ? *",
+	"backup_cron": "0 0 7 1/1 * ? *",
 	// Time between manual backups using the command
 	"manual_backups_time": 0,
 	// Only run a backup if a player has been online since the last backup
@@ -46,7 +46,7 @@
 	*/
 	"additional_files": [],
 	// Display file size in backup message
-	"display_file_size": false,
+	"display_file_size": true,
 	// backup location
 	"backup_location": ".",
 	// Specify the backup format. Valid options are ZIP and DIRECTORY

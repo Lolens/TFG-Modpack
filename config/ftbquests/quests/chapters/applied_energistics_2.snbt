@@ -874,6 +874,17 @@
 			dependencies: ["61D498F27A4194D3"]
 			description: ["{quests.ae2.cell_component_64m.desc}"]
 			id: "426B327852C46764"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_force_load_chunks @s add 10"
+				elevate_perms: true
+				icon: "tfc:kaolin_clay_grass"
+				id: "5075ACEC39E2E1FE"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки прогрузки (10)"
+				type: "command"
+			}]
 			tasks: [{
 				id: "230D2F68A39EE752"
 				item: "megacells:cell_component_64m"

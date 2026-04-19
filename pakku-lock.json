@@ -2635,7 +2635,7 @@
         {
             "pakku_id": "souzHQQB9HhNTn5r",
             "type": "MOD",
-            "side": "BOTH",
+            "side": "SERVER",
             "slug": {
                 "curseforge": "chunky-pregenerator-forge",
                 "modrinth": "chunky"

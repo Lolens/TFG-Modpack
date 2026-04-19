@@ -5,27 +5,21 @@
 	group: "19428C6E7A36D463"
 	icon: "tfg:terra_firma_greg"
 	id: "5DD2C08324B24805"
-	images: [
-		{
-			height: 2.0d
-			image: "tfg:textures/gui/tfg_logo_title_4181x688_with_shadow.png"
-			rotation: 0.0d
-			width: 12.15406976744186d
-			x: 0.0d
-			y: -3.0d
-		}
-		{
-			click: "https://github.com/TerraFirmaGreg-Team/Modpack-Modern/wiki/%5BEN%5D-Suggested-additional-mods"
-			height: 1.0d
-			image: "ftblibrary:icons/globe"
-			rotation: 0.0d
-			width: 1.0d
-			x: -4.5d
-			y: 0.0d
-		}
-	]
+	images: [{
+		height: 2.0d
+		image: "tfg:textures/gui/tfg_logo_title_4181x688_with_shadow.png"
+		rotation: 0.0d
+		width: 12.15406976744186d
+		x: 0.0d
+		y: -3.0d
+	}]
 	order_index: 0
-	quest_links: [ ]
+	quest_links: [{
+		id: "2A9216F49D92C080"
+		linked_quest: "379F434116632A89"
+		x: -4.0d
+		y: -1.5d
+	}]
 	quests: [
 		{
 			can_repeat: false
@@ -75,6 +69,28 @@
 				id: "createaddition:chocolate_cake"
 			}
 			id: "0B42D4AE2AC67F93"
+			rewards: [
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_claim_chunks @s add 4"
+					elevate_perms: true
+					icon: "tfc:grass/loam"
+					id: "1D1608096F279A7A"
+					silent: true
+					title: "Дополнительные чанки привата (4)"
+					type: "command"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_force_load_chunks @s add 1"
+					elevate_perms: true
+					icon: "tfc:kaolin_clay_grass"
+					id: "601922220FD9FC8F"
+					silent: true
+					title: "Дополнительные чанки прогрузки (1)"
+					type: "command"
+				}
+			]
 			subtitle: "{quests.tfg.capture_territory.subtitle}"
 			tasks: [{
 				id: "5EB438DED5A994C4"
@@ -167,41 +183,853 @@
 			y: 4.5d
 		}
 		{
-			dependencies: ["0B42D4AE2AC67F93"]
-			description: ["{quests.tfg.chunk_limit.desc}"]
-			icon: {
-				Count: 1
-				ForgeCaps: {
-					"tfc:food": {
-						creationDate: 99999999999L
-						traits: [ ]
-					}
-				}
-				id: "tfc:food/cherry"
-			}
-			id: "12BCC8F968904105"
+			dependencies: ["427814F6E9386772"]
+			icon: "tfc:torch"
+			id: "26042B9D63833665"
+			optional: true
+			rewards: [{
+				id: "37AF38B17174E39F"
+				item: "tfc:torch"
+				type: "item"
+			}]
 			tasks: [{
-				id: "6A9ABF4B83F7FC3E"
-				title: "{quests.tasktype.checkmark}"
+				id: "4136A867AD221216"
+				title: "{quests.custom.torch_gift.task0}"
 				type: "checkmark"
 			}]
-			title: "{quests.tfg.chunk_limit.title}"
-			x: -2.5d
-			y: 3.5d
+			title: "{quests.custom.torch_gift.title}"
+			x: 3.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["3D7B0F3134C30364"]
+			description: ["{quests.custom.inventory_quest_buttons_guide.description}"]
+			id: "7F461C58B9E62A7D"
+			tasks: [{
+				id: "54557C6422BC0D8D"
+				title: "{quests.custom.inventory_quest_buttons_guide.title}"
+				type: "checkmark"
+			}]
+			x: 1.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["05F491C692D530B2"]
+			description: ["{quests.custom.time_rewards.hours_1.description}"]
+			icon: "minecraft:clock"
+			id: "02A1124B8112A586"
+			rewards: [
+				{
+					id: "76BF6C424681D17F"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "rnr:metal/mattock/copper"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					count: 256
+					id: "60FD1D3BDC1C3978"
+					item: "rnr:crushed_base_course"
+					type: "item"
+				}
+				{
+					count: 256
+					id: "28855A4E9A198BEC"
+					item: "rnr:gravel_fill/quartzite"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "12F1947D3023DF6B"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.hours_1.task0}"
+				type: "stat"
+				value: 72000
+			}]
+			title: "{quests.custom.time_rewards.hours_1.title}"
+			x: -5.5d
+			y: -1.5d
+		}
+		{
+			dependencies: ["02A1124B8112A586"]
+			description: ["{quests.custom.time_rewards.hours_3.description}"]
+			icon: "minecraft:clock"
+			id: "6FEE9866CCA73183"
+			rewards: [
+				{
+					count: 4
+					id: "275CE671F97F2E35"
+					item: "minecraft:leather"
+					type: "item"
+				}
+				{
+					count: 32
+					id: "30767CC2E9B9107E"
+					item: "tfc:wool_yarn"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "5C4FB3B394EBB165"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.hours_3.task0}"
+				type: "stat"
+				value: 216000
+			}]
+			title: "{quests.custom.time_rewards.hours_3.title}"
+			x: -5.5d
+			y: 0.0d
 		}
 		{
 			dependencies: ["427814F6E9386772"]
-			description: ["{quests.tfg.optional_mods.desc}"]
-			icon: "create:clipboard"
-			id: "41424D4906E05582"
-			subtitle: "{quests.tfg.optional_mods.subtitle}"
+			description: ["{quests.custom.time_rewards.time_rewards_entry_quest.description}"]
+			id: "05F491C692D530B2"
 			tasks: [{
-				id: "74B93241E94ED02A"
+				id: "607ADB02CBA5AB8F"
+				title: "{quests.custom.time_rewards.time_rewards_entry_quest.task0}"
 				type: "checkmark"
 			}]
-			title: "{quests.tfg.optional_mods.title}"
-			x: -3.5d
+			title: "{quests.custom.time_rewards.time_rewards_entry_quest.title}"
+			x: -4.0d
 			y: 0.0d
+		}
+		{
+			dependencies: ["6FEE9866CCA73183"]
+			description: ["{quests.custom.time_rewards.hours_6.description}"]
+			icon: "minecraft:clock"
+			id: "6D3F67BA2D07A645"
+			rewards: [
+				{
+					count: 2
+					id: "0DFE198879B404BF"
+					item: "gtceu:wood_crate"
+					type: "item"
+				}
+				{
+					count: 2
+					id: "05F2D8F934B68D10"
+					item: "gtceu:bronze_drum"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "56C86F5AF22F1A2F"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.hours_6.task0}"
+				type: "stat"
+				value: 432000
+			}]
+			title: "{quests.custom.time_rewards.hours_6.title}"
+			x: -6.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["6D3F67BA2D07A645"]
+			description: ["{quests.custom.time_rewards.hours_12.description}"]
+			hide_text_until_complete: true
+			icon: "minecraft:clock"
+			id: "18BA387BF27E0687"
+			rewards: [
+				{
+					id: "19BD1EEFB1335071"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfchotornot:tongs/bismuth_bronze"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					count: 32
+					id: "6A43C14616C1C301"
+					item: "minecraft:charcoal"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "2D918409EF74D9C0"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.hours_12.task0}"
+				type: "stat"
+				value: 864000
+			}]
+			title: "{quests.custom.time_rewards.hours_12.title}"
+			x: -7.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["18BA387BF27E0687"]
+			description: ["{quests.custom.time_rewards.days_1.description}"]
+			hide_text_until_complete: true
+			icon: "minecraft:clock"
+			id: "713CA87541AE1B33"
+			rewards: [
+				{
+					id: "23A32221128454FC"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfc:metal/javelin/wrought_iron"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					id: "2534E74F72CA419C"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfc:metal/shield/black_bronze"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					count: 2
+					id: "18D7F8440AFB7BC1"
+					item: "tfg:resistance_salvo"
+					type: "item"
+				}
+				{
+					id: "1348EB976AEF1478"
+					item: {
+						Count: 1
+						id: "tfccanes:refined_walking_cane"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "0835BCA1D3FDF794"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_1.task0}"
+				type: "stat"
+				value: 1728000
+			}]
+			title: "{quests.custom.time_rewards.days_1.title}"
+			x: -7.5d
+			y: -1.5d
+		}
+		{
+			dependencies: ["713CA87541AE1B33"]
+			description: ["{quests.custom.time_rewards.days_2.description}"]
+			icon: "minecraft:clock"
+			id: "55AFCAE973DA0F92"
+			rewards: [
+				{
+					id: "5D69478AC2E655DC"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfc:metal/helmet/bismuth_bronze"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					id: "46993C1FDE256708"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfc:metal/chestplate/bismuth_bronze"
+						tag: {
+							Damage: 0
+						}
+					}
+					type: "item"
+				}
+				{
+					count: 4
+					id: "3A04605370878544"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:food": {
+								creationDate: -2L
+								foodData: {
+									dairy: 0.2f
+									decay: 0.0f
+									food: 4
+									fruit: 0.0f
+									grain: 1.0f
+									meat: 1.8000001f
+									sat: 4.15f
+									veg: 0.8f
+									water: 0.5f
+								}
+								ingredients: [
+									{
+										Count: 1b
+										ForgeCaps: {
+											"tfc:food": {
+												creationDate: -2L
+												traits: [
+													"firmalife:smoked"
+													"tfc:brined"
+													"tfc:salted"
+													"tfc:wood_grilled"
+												]
+											}
+											"tfc:item_heat": {
+												heat: 0.0f
+												ticks: 0L
+											}
+										}
+										id: "firmalife:food/cooked_bacon"
+									}
+									{
+										Count: 1b
+										ForgeCaps: {
+											"tfc:food": {
+												creationDate: -2L
+												traits: ["tfc:wood_grilled"]
+											}
+										}
+										id: "tfc:food/cooked_egg"
+									}
+									{
+										Count: 1b
+										ForgeCaps: {
+											"tfc:food": {
+												creationDate: -2L
+												traits: [ ]
+											}
+										}
+										id: "tfc:food/onion"
+									}
+									{
+										Count: 2b
+										ForgeCaps: {
+											"tfc:food": {
+												creationDate: -2L
+												traits: ["firmalife:oven_baked"]
+											}
+											"tfc:item_heat": {
+												heat: 0.0f
+												ticks: 0L
+											}
+										}
+										id: "firmalife:food/wheat_slice"
+									}
+								]
+								traits: [ ]
+							}
+						}
+						id: "tfc:food/wheat_bread_sandwich"
+					}
+					type: "item"
+				}
+				{
+					count: 4
+					id: "1CC6CD500F4147C0"
+					item: "tfg:instant_health_salvo"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "2594298DB1476163"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_2.task0}"
+				type: "stat"
+				value: 3456000
+			}]
+			title: "{quests.custom.time_rewards.days_2.title}"
+			x: -8.5d
+			y: -3.0d
+		}
+		{
+			dependencies: ["55AFCAE973DA0F92"]
+			description: ["{quests.custom.time_rewards.days_3.description}"]
+			icon: "minecraft:clock"
+			id: "2D6CFD93C0A1284A"
+			rewards: [
+				{
+					count: 24
+					id: "793729B65849C17F"
+					item: "tfc:fire_clay"
+					type: "item"
+				}
+				{
+					id: "7B551E3FCCB09570"
+					item: "greate:steel_mechanical_pump"
+					type: "item"
+				}
+				{
+					id: "1C524545A4841ABF"
+					item: "tfcchannelcasting:mold_table"
+					type: "item"
+				}
+				{
+					id: "30D1ED4D89DEBC5E"
+					item: "create:chute"
+					type: "item"
+				}
+				{
+					count: 2
+					id: "61E69BE178555C52"
+					item: "greate:large_steel_cogwheel"
+					type: "item"
+				}
+				{
+					count: 2
+					id: "26BD83DE2CF7B833"
+					item: "greate:steel_cogwheel"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "03347818E4901DF0"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_3.task0}"
+				type: "stat"
+				value: 5184000
+			}]
+			title: "{quests.custom.time_rewards.days_3.title}"
+			x: -9.5d
+			y: -1.5d
+		}
+		{
+			dependencies: ["2D6CFD93C0A1284A"]
+			description: ["{quests.custom.time_rewards.days_4.description}"]
+			icon: "minecraft:clock"
+			id: "1FC0AFC9391756A1"
+			rewards: [
+				{
+					count: 2
+					id: "4894938CD79EBFCB"
+					item: "greate:steel_gearbox"
+					type: "item"
+				}
+				{
+					count: 9
+					id: "683189EA9A98EADC"
+					item: "greate:steel_shaft"
+					type: "item"
+				}
+				{
+					id: "18FEEFB0E86E35E8"
+					item: "create:rotation_speed_controller"
+					type: "item"
+				}
+				{
+					id: "74F98DA6F74B665A"
+					item: "create:weighted_ejector"
+					type: "item"
+				}
+				{
+					id: "3A3A9115B3031699"
+					item: "create:mechanical_arm"
+					type: "item"
+				}
+				{
+					id: "2E26AF36A29702CA"
+					item: "createaddition:alternator"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "1C81D59886646BFE"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_4.task0}"
+				type: "stat"
+				value: 6912000
+			}]
+			title: "{quests.custom.time_rewards.days_4.title}"
+			x: -9.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["1FC0AFC9391756A1"]
+			description: ["{quests.custom.time_rewards.days_5.description}"]
+			icon: "minecraft:clock"
+			id: "3A3265CE383BBC87"
+			rewards: [
+				{
+					count: 64
+					id: "47EF2E6967D962AB"
+					item: "ags_modernmarkings:wall_marking_hazard_diamond"
+					type: "item"
+				}
+				{
+					count: 16
+					id: "27CA2391AA521050"
+					item: "minecraft:white_carpet"
+					type: "item"
+				}
+				{
+					id: "017FB78ADBD386E6"
+					item: "minecraft:painting"
+					type: "item"
+				}
+				{
+					count: 32
+					id: "04383BAF494DE703"
+					item: "minecraft:glass"
+					type: "item"
+				}
+				{
+					id: "6DF548E9B3715ED5"
+					item: "minecraft:armor_stand"
+					type: "item"
+				}
+				{
+					count: 4
+					id: "2E25EDB90922E528"
+					item: "minecraft:item_frame"
+					type: "item"
+				}
+				{
+					count: 4
+					id: "689A8FFED5631892"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "tfc:metal/lamp/steel"
+					}
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "0FEE0A56ECB68F83"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_5.task0}"
+				type: "stat"
+				value: 8640000
+			}]
+			title: "{quests.custom.time_rewards.days_5.title}"
+			x: -10.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["3A3265CE383BBC87"]
+			description: ["{quests.custom.time_rewards.days_6.description}"]
+			icon: "minecraft:clock"
+			id: "428960FC611E970E"
+			rewards: [
+				{
+					id: "4A0E2BCEF4C996C9"
+					item: {
+						Count: 1
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "gtceu:blue_steel_mining_hammer"
+						tag: {
+							Damage: 0
+							DisallowContainerItem: 0b
+							GT.Behaviours: {
+								AoEColumn: 1
+								AoELayer: 0
+								AoERow: 1
+								MaxAoEColumn: 1
+								MaxAoELayer: 0
+								MaxAoERow: 1
+								TorchPlacing: 1b
+							}
+							GT.Tool: {
+								DefaultEnchantments: [ ]
+								HarvestLevel: 3
+								MaxDamage: 18431
+								ToolSpeed: 10.0f
+							}
+							HideFlags: 2
+						}
+					}
+					type: "item"
+				}
+				{
+					count: 2
+					id: "1697BE643E864963"
+					item: "tfg:haste_tablet"
+					type: "item"
+				}
+				{
+					count: 4
+					id: "1A6A1D1C8B9BD1D4"
+					item: "tfg:night_vision_tablet"
+					type: "item"
+				}
+				{
+					count: 2
+					id: "052392AC4462DAE8"
+					item: "tfg:regeneration_tablet"
+					type: "item"
+				}
+				{
+					id: "2D1A780DE07607E8"
+					item: "tfg:rad_away_pill"
+					type: "item"
+				}
+				{
+					count: 4
+					id: "525A7F93FE6AA964"
+					item: "tfg:fire_resistance_salvo"
+					type: "item"
+				}
+				{
+					count: 4
+					id: "026B79A9C1563529"
+					item: "tfg:resistance_salvo"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "0B4848DDD4BC299B"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_6.task0}"
+				type: "stat"
+				value: 10368000
+			}]
+			title: "{quests.custom.time_rewards.days_6.title}"
+			x: -11.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["428960FC611E970E"]
+			description: ["{quests.custom.time_rewards.days_7.description}"]
+			icon: "minecraft:clock"
+			id: "452D6F4C0123F838"
+			rewards: [
+				{
+					id: "59D1B7B5964BD0BE"
+					item: "tfg:lv_food_processor"
+					type: "item"
+				}
+				{
+					id: "62FB13FF0981A93A"
+					item: "tfg:lv_food_oven"
+					type: "item"
+				}
+			]
+			tasks: [{
+				id: "701B2D74D8349BBF"
+				stat: "minecraft:total_world_time"
+				title: "{quests.custom.time_rewards.days_7.task0}"
+				type: "stat"
+				value: 12096000
+			}]
+			title: "{quests.custom.time_rewards.days_7.title}"
+			x: -11.5d
+			y: -1.5d
+		}
+		{
+			dependencies: ["6D3F67BA2D07A645"]
+			description: ["{quests.custom.additional.prospector.description}"]
+			icon: {
+				Count: 1
+				id: "gtceu:prospector.lv"
+				tag: {
+					Charge: 100000L
+				}
+			}
+			id: "0B618D870DDB147C"
+			optional: true
+			rewards: [{
+				id: "387C2215B597D445"
+				item: {
+					Count: 1
+					id: "gtceu:prospector.lv"
+					tag: {
+						Charge: 100000L
+					}
+				}
+				type: "item"
+			}]
+			subtitle: "{quests.custom.additional.prospector.subtitle}"
+			tasks: [
+				{
+					consume_items: true
+					count: 2L
+					id: "51CA95DEB8FA719E"
+					item: {
+						Count: 2
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "gtceu:small_wrought_iron_gear"
+					}
+					type: "item"
+				}
+				{
+					consume_items: true
+					count: 2L
+					id: "2232E606B1093309"
+					item: { Count: 2, id: "minecraft:lightning_rod" }
+					type: "item"
+				}
+				{
+					consume_items: true
+					count: 4L
+					id: "1FB883E78B540E4B"
+					item: {
+						Count: 4
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "gtceu:tin_screw"
+					}
+					type: "item"
+				}
+				{
+					consume_items: true
+					count: 4L
+					id: "33932BBDE6D99CA9"
+					item: {
+						Count: 4
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "vintageimprovements:zinc_sheet"
+					}
+					type: "item"
+				}
+			]
+			title: "{quests.custom.additional.prospector.title}"
+			x: -6.5d
+			y: 3.0d
+		}
+		{
+			can_repeat: true
+			dependencies: ["0B618D870DDB147C"]
+			description: ["{quests.custom.additional.prospector_charge.description}"]
+			icon: "ags_modernmarkings:wall_marking_voltage_fe"
+			id: "04E8E177BC9DE963"
+			optional: true
+			rewards: [{
+				id: "399E82192D36B137"
+				item: {
+					Count: 1
+					id: "gtceu:prospector.lv"
+					tag: {
+						Charge: 100000L
+					}
+				}
+				type: "item"
+			}]
+			tasks: [
+				{
+					consume_items: true
+					id: "0AB4AB644268B7E1"
+					item: {
+						Count: 1
+						id: "gtceu:prospector.lv"
+						tag: { }
+					}
+					title: "{quests.custom.additional.prospector_charge.task0}"
+					type: "item"
+				}
+				{
+					consume_items: true
+					count: 32L
+					id: "7027E21BE94AB7E0"
+					item: {
+						Count: 64
+						ForgeCaps: {
+							"tfc:item_heat": {
+								heat: 0.0f
+								ticks: 0L
+							}
+						}
+						id: "minecraft:redstone"
+					}
+					type: "item"
+				}
+			]
+			title: "{quests.custom.additional.prospector_charge.title}"
+			x: -6.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["18BA387BF27E0687"]
+			description: ["Дополнительные чанки привата помогут защитить дом от незванных гостей"]
+			hide_text_until_complete: true
+			icon: "minecraft:clock"
+			id: "053EA12A33C10D69"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_claim_chunks @s add 5"
+				elevate_perms: true
+				icon: "tfc:grass/loam"
+				id: "2B58DBD2D2E88474"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки привата (5)"
+				type: "command"
+			}]
+			tasks: [{
+				id: "34E8446802DEF436"
+				stat: "minecraft:total_world_time"
+				title: "18 часов"
+				type: "stat"
+				value: 1296000
+			}]
+			title: "18 часов"
+			x: -8.5d
+			y: 1.5d
 		}
 	]
 	subtitle: ["{quests.tfg.subtitle}"]

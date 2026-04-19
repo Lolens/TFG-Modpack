@@ -228,7 +228,7 @@
             "side": "BOTH"
         },
         "tfcgenviewer": {
-            "side": "BOTH"
+            "side": "CLIENT"
         },
         "tfc-hot-or-not": {
             "side": "BOTH"
@@ -257,11 +257,14 @@
         "colorwheel": {
             "side": "CLIENT"
         },
+        "chunky": {
+            "side": "SERVER"
+        },
         "autopack-director": {
             "export": false
         },
         "ftb-backups-2": {
-            "side": "BOTH",
+            "side": "SERVER",
             "export": true
         },
         "ftb-chunks-forge": {
@@ -287,10 +290,6 @@
         },
         "ftb-xmod-compat": {
             "export": true
-        },
-        "probejs": {
-            "side": "CLIENT",
-            "export": false
         }
     }
 }

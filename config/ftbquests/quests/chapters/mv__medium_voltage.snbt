@@ -546,6 +546,30 @@
 			description: ["{quests.medium_voltage.mv_first_hv.desc}"]
 			icon: "gtceu:advanced_integrated_circuit"
 			id: "26394C1290D70AB6"
+			rewards: [
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_claim_chunks @s add 5"
+					elevate_perms: true
+					icon: "tfc:grass/loam"
+					id: "7884A5FDED3CD5CC"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки привата (5)"
+					type: "command"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_force_load_chunks @s add 1"
+					elevate_perms: true
+					icon: "tfc:kaolin_clay_grass"
+					id: "078941F64947D9DD"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки прогрузки (1)"
+					type: "command"
+				}
+			]
 			shape: "square"
 			size: 1.0d
 			subtitle: "{quests.medium_voltage.mv_first_hv.subtitle}"
@@ -775,6 +799,17 @@
 			description: ["{quests.medium_voltage.mv_polyethylene.desc}"]
 			icon: "gtceu:polyethylene_plate"
 			id: "10FB27DD3C7BEC2F"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_claim_chunks @s add 5"
+				elevate_perms: true
+				icon: "tfc:grass/loam"
+				id: "40F93CBE97820C88"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки привата (5)"
+				type: "command"
+			}]
 			shape: "gear"
 			size: 3.0d
 			subtitle: "{quests.medium_voltage.mv_polyethylene.subtitle}"

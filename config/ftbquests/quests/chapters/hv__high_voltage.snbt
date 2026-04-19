@@ -1135,11 +1135,35 @@
 			]
 			description: ["{quests.high_voltage.welcome_moon.desc}"]
 			id: "00A2566109144D7F"
-			rewards: [{
-				id: "4E4076733CA38807"
-				item: "ad_astra:cheese_block"
-				type: "item"
-			}]
+			rewards: [
+				{
+					id: "4E4076733CA38807"
+					item: "ad_astra:cheese_block"
+					type: "item"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_claim_chunks @s add 10"
+					elevate_perms: true
+					icon: "tfc:grass/loam"
+					id: "75722BD0BBD633AA"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки привата (10)"
+					type: "command"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_force_load_chunks @s add 2"
+					elevate_perms: true
+					icon: "tfc:kaolin_clay_grass"
+					id: "462BDED595AF7833"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки прогрузки (2)"
+					type: "command"
+				}
+			]
 			shape: "gear"
 			size: 4.0d
 			subtitle: "{quests.high_voltage.welcome_moon.subtitle}"

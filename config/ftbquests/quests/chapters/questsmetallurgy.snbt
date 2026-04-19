@@ -163,6 +163,17 @@
 			description: ["{quests.metal_age.wrought_iron_anvil.desc}"]
 			guide_page: "tfc:field_guide tfc:tfg_tips/anvil_working_guide"
 			id: "174DA15847665CF8"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_claim_chunks @s add 5"
+				elevate_perms: true
+				icon: "tfc:grass/loam"
+				id: "592A2B7799C5FE51"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки привата (5)"
+				type: "command"
+			}]
 			shape: "octagon"
 			size: 2.0d
 			subtitle: "{quests.metal_age.wrought_iron_anvil.subtitle}"
@@ -703,6 +714,17 @@
 			dependency_requirement: "one_completed"
 			description: ["{quests.metal_age.redblu_anvil.desc}"]
 			id: "56CA2EB7812529C5"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_claim_chunks @s add 5"
+				elevate_perms: true
+				icon: "tfc:grass/loam"
+				id: "4FB46B095B570985"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки привата (5)"
+				type: "command"
+			}]
 			shape: "octagon"
 			size: 2.0d
 			subtitle: "{quests.metal_age.redblu_anvil.subtitle}"
