@@ -559,11 +559,36 @@
 				"{quests.low_voltage.lv_ebf.desc.3}"
 			]
 			id: "1E9BE8D3F8A602DC"
-			rewards: [{
-				id: "5A3DDA916C125D0F"
-				item: "gtceu:terminal"
-				type: "item"
-			}]
+			rewards: 
+			[
+				{
+					id: "5A3DDA916C125D0F"
+					item: "gtceu:terminal"
+					type: "item"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_claim_chunks @s add 5"
+					elevate_perms: true
+					icon: "tfc:grass/loam"
+					id: "046078FAE9D9813F"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки привата (5)"
+					type: "command"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_force_load_chunks @s add 2"
+					elevate_perms: true
+					icon: "tfc:kaolin_clay_grass"
+					id: "5801D2CC96B12A30"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки прогрузки (2)"
+					type: "command"
+				}
+			]
 			shape: "octagon"
 			size: 2.0d
 			subtitle: "{quests.low_voltage.lv_ebf.subtitle}"

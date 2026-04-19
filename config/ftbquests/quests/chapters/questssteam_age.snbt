@@ -1424,6 +1424,30 @@
 			description: ["{quests.steam_age.lv_circuit.desc}"]
 			icon: "gtceu:basic_electronic_circuit"
 			id: "3D8174C64DDC268B"
+			rewards: [
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_claim_chunks @s add 5"
+					elevate_perms: true
+					icon: "tfc:grass/loam"
+					id: "0561477F281E5BA2"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки привата (5)"
+					type: "command"
+				}
+				{
+					auto: "enabled"
+					command: "/ftbchunks admin extra_force_load_chunks @s add 1"
+					elevate_perms: true
+					icon: "tfc:kaolin_clay_grass"
+					id: "17C57579B9DF4214"
+					silent: true
+					team_reward: false
+					title: "Дополнительные чанки прогрузки (1)"
+					type: "command"
+				}
+			]
 			shape: "gear"
 			size: 3.0d
 			subtitle: "{quests.steam_age.lv_circuit.subtitle}"

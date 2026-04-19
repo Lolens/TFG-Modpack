@@ -298,6 +298,17 @@
 			dependencies: ["0B140885C77A752D"]
 			description: ["{quests.stone_age.workbench.desc}"]
 			id: "4C444814F1C7B600"
+			rewards: [{
+				auto: "enabled"
+				command: "/ftbchunks admin extra_claim_chunks @s add 6"
+				elevate_perms: true
+				icon: "tfc:grass/loam"
+				id: "45FF1D220471ACD8"
+				silent: true
+				team_reward: false
+				title: "Дополнительные чанки привата (6)"
+				type: "command"
+			}]
 			shape: "octagon"
 			size: 3.0d
 			subtitle: "{quests.stone_age.workbench.subtitle}"
