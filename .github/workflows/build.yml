@@ -36,6 +36,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - name: 🔍 Check pakku-lock.json
         id: check_pakku_lock
@@ -304,8 +305,6 @@ jobs:
             📃 **Release Type**: `${{ needs.info.outputs.release_type }}`
             📃 **Loader**: `${{ needs.info.outputs.loader_type }}-${{ needs.info.outputs.loader_version }}`
 
-            ${{ needs.info.outputs.changelog }}
-
   build-project:
     name: 📦 Build Project
     needs: [info]
@@ -473,9 +472,6 @@ jobs:
           name: ${{ needs.info.outputs.project_version }}
           tag_name: ${{ needs.info.outputs.project_version }}
           target_commitish: ${{ github.ref_name }}
-          body: |
-            ${{ needs.info.outputs.changelog }}
-            ${{ steps.format_diff.outputs.text }}
           files: |
             ${{ needs.info.outputs.project_full_name }}-serverpack.zip
             ${{ needs.info.outputs.project_full_name }}-.minecraft.zip
